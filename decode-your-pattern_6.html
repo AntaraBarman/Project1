@@ -433,6 +433,7 @@
   /* honesty banner */
   .honesty { border:1px dashed #f5a623; background:rgba(245,166,35,.12); border-radius:12px; padding:14px 16px; margin-bottom:16px; font-size:13.5px; color:var(--text-light); }
   .honesty b { color:#ffca6a; }
+  .report-date { font-size:12.5px; color:var(--text-light-soft); margin:2px 0 14px; font-variant-numeric:tabular-nums; }
 
   /* game feel */
   .checkpoint-toast{position:fixed;left:50%;top:16%;transform:translate(-50%,-10px);z-index:120;
@@ -648,6 +649,7 @@
       <p class="eyebrow" id="result-eyebrow">The shape of your game</p>
       <h2 class="archetype-name" id="archetype-name"></h2>
       <p class="archetype-tagline" id="archetype-tagline"></p>
+      <p class="report-date" id="report-date"></p>
       <div class="honesty">🪞 <b>An honest mirror, not a horoscope.</b> This report tells you the truth as your answers reveal it — including the uncomfortable parts. Low scores aren't softened. Read it as feedback, not a verdict.</div>
     </div>
 
@@ -1689,6 +1691,10 @@ function computeAndShowResult(){
   const archetype = buildArchetype(dimScores);
   document.getElementById('archetype-name').textContent = archetype.name;
   document.getElementById('archetype-tagline').textContent = archetype.tagline;
+  const _gen = new Date();
+  const _genStr = _gen.toLocaleString(undefined, {weekday:'long', day:'numeric', month:'long', year:'numeric', hour:'numeric', minute:'2-digit'});
+  document.getElementById('report-date').textContent = '🗓️ Generated ' + _genStr;
+  lastGeneratedAt = _genStr;
   document.getElementById('overall-score').textContent = overall;
 
   let headline, sub;
@@ -1870,6 +1876,17 @@ async function downloadPdf(){
       pdf.addImage(imgData, 'JPEG', marginMm, cursorYMm, usableWidthMm, blockHeightMm);
       cursorYMm += blockHeightMm + 3;
       isFirstBlockOnPage = false;
+    }
+
+    // Page numbers on every page (added last, once the total page count is known).
+    const totalPages = pdf.getNumberOfPages();
+    const dateLabel = lastGeneratedAt ? `  ·  ${lastGeneratedAt}` : '';
+    for (let p = 1; p <= totalPages; p++) {
+      pdf.setPage(p);
+      pdf.setFontSize(8);
+      pdf.setTextColor(120, 113, 100);
+      pdf.text(`Decode Your Pattern${dateLabel}`, marginMm, pageHeight - 4);
+      pdf.text(`Page ${p} of ${totalPages}`, pageWidth - marginMm, pageHeight - 4, { align: 'right' });
     }
 
     const namePart = profile.name ? `${profile.name.trim().replace(/\s+/g, '-')}-` : '';
@@ -2149,7 +2166,7 @@ function buildTriggers(dimScores){
 }
 
 /* ---------- 10. Render orchestration for all v2 sections ---------- */
-let lastPatternScore=null, lastPoints=[];
+let lastPatternScore=null, lastPoints=[], lastGeneratedAt='';
 function renderV2(dimScores, overall){
   // pattern score
   const ps=computePatternScore(overall); lastPatternScore=ps;
@@ -2186,6 +2203,7 @@ function buildReportText(){
   const lines=[];
   lines.push('DECODE YOUR PATTERN — your report');
   if(profile.name) lines.push('For: '+profile.name);
+  if(lastGeneratedAt) lines.push('Generated: '+lastGeneratedAt);
   lines.push('');
   if(ps){ lines.push('PATTERN SCORE: '+ps.score+'/900 ('+ps.band.label+')'); lines.push(ps.band.verdict); lines.push(''); }
   if(lastReport){ lines.push('Archetype: '+lastReport.archetypeName); lines.push('Overall: '+lastReport.overall+'/100'); lines.push(''); }
