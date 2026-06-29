@@ -3,18 +3,159 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="refresh" content="0; url=decode-your-pattern_6.html">
-<title>Decode Your Pattern</title>
-<meta name="description" content="Decode Your Pattern — a free, personalised self-reflection assessment that turns a few honest answers into your Pattern Score, charts, an honest read, and an action plan.">
-<link rel="canonical" href="decode-your-pattern_6.html">
-<script>location.replace('decode-your-pattern_6.html');</script>
+<title>Decode Your Pattern — your personalised self-reflection report</title>
+<meta name="description" content="A free, personalised self-reflection tool. Answer a few honest questions and get your Pattern Score, colourful charts, an honest read of how you operate, tailored book/podcast/video picks, a quote chosen for you, and a clear action plan. Runs in your browser — no sign-up, no tracking.">
+<meta name="theme-color" content="#14171f">
+<link rel="canonical" href="https://antarabarman.github.io/Project1/">
+<!-- Open Graph / social sharing -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Decode Your Pattern — your personalised self-reflection report">
+<meta property="og:description" content="Answer a few honest questions and get a personalised, explainable read of how you actually operate — your Pattern Score, charts, an honest read, and a clear action plan. Free, in your browser.">
+<meta property="og:url" content="https://antarabarman.github.io/Project1/">
+<meta property="og:image" content="https://antarabarman.github.io/Project1/social-preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Decode Your Pattern">
+<meta name="twitter:description" content="A free, personalised, explainable read of how you actually operate — Pattern Score, charts, honest read, and an action plan.">
+<meta name="twitter:image" content="https://antarabarman.github.io/Project1/social-preview.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  body{background:#14171f;color:#ece6d4;font-family:system-ui,-apple-system,sans-serif;
-    display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;text-align:center}
-  a{color:#19D5BF;font-weight:600}
+  :root{
+    --bg:#14171f; --bg2:#1c2030; --panel:#20242f; --line:#353a4a;
+    --teal:#19D5BF; --teal-deep:#0E7A6E;
+    --text:#ece6d4; --text-soft:#b8b0a0; --text-mute:#8a7f64;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;line-height:1.6;overflow-x:hidden;position:relative;min-height:100vh}
+  h1,h2,h3{font-family:'Fraunces',Georgia,serif;letter-spacing:-.01em;font-weight:600}
+  a{color:inherit}
+  .bg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+  .orb{position:absolute;border-radius:50%;filter:blur(70px);opacity:.18;will-change:transform}
+  .o1{width:420px;height:420px;background:#19D5BF;top:-8%;left:-6%;animation:f1 24s ease-in-out infinite}
+  .o2{width:360px;height:360px;background:#4a7fb5;bottom:-10%;right:-6%;animation:f2 28s ease-in-out infinite}
+  .o3{width:300px;height:300px;background:#a06bb0;top:45%;left:60%;animation:f1 32s ease-in-out infinite reverse}
+  @keyframes f1{0%,100%{transform:translate(0,0)}50%{transform:translate(40px,50px)}}
+  @keyframes f2{0%,100%{transform:translate(0,0)}50%{transform:translate(-40px,-30px)}}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 22px;position:relative;z-index:1}
+
+  .hero{padding:90px 0 56px;text-align:center}
+  .eyebrow{font-size:12.5px;text-transform:uppercase;letter-spacing:.18em;color:var(--teal);font-weight:700;margin-bottom:18px}
+  .hero h1{font-size:clamp(40px,7vw,76px);line-height:1.03;font-weight:700;margin-bottom:20px}
+  .hero h1 .grad{background:linear-gradient(100deg,#19D5BF,#5db4ff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .hero .lede{font-size:clamp(16px,2.3vw,20px);color:var(--text-soft);max-width:620px;margin:0 auto 34px}
+  .cta{display:inline-block;font-family:'Inter';font-weight:700;font-size:18px;color:#06302b;background:var(--teal);
+    padding:16px 36px;border-radius:10px;text-decoration:none;box-shadow:0 14px 34px -12px rgba(25,213,191,.6);
+    transition:transform .2s,box-shadow .2s}
+  .cta:hover{transform:translateY(-3px);box-shadow:0 20px 44px -12px rgba(25,213,191,.75)}
+  .cta-note{margin-top:16px;font-size:13.5px;color:var(--text-mute)}
+
+  .peek{display:flex;align-items:center;justify-content:center;gap:18px;margin:46px auto 0;max-width:520px;
+    background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px 26px;flex-wrap:wrap}
+  .peek .num{font-family:'Fraunces',serif;font-weight:700;font-size:54px;line-height:1;color:var(--teal)}
+  .peek .meta{text-align:left}
+  .peek .meta .k{font-size:11.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--text-mute);font-weight:700}
+  .peek .meta .v{font-size:15px;color:var(--text-soft)}
+
+  .section{padding:54px 0}
+  .section h2{font-size:clamp(26px,4vw,38px);text-align:center;margin-bottom:10px}
+  .section .sub{text-align:center;color:var(--text-soft);max-width:560px;margin:0 auto 36px;font-size:15.5px}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px 22px}
+  .card .ic{font-size:30px;margin-bottom:12px;line-height:1}
+  .card h3{font-size:19px;margin-bottom:8px;color:#fbf8ef}
+  .card p{font-size:14px;color:var(--text-soft);line-height:1.6}
+
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;counter-reset:s}
+  .step{position:relative;padding:22px 20px 22px 64px;background:var(--panel);border:1px solid var(--line);border-radius:16px}
+  .step::before{counter-increment:s;content:counter(s);position:absolute;left:18px;top:20px;width:34px;height:34px;border-radius:50%;
+    background:var(--teal);color:#06302b;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:16px}
+  .step h3{font-size:16px;margin-bottom:5px;color:#fbf8ef}
+  .step p{font-size:13.5px;color:var(--text-soft)}
+
+  .pills{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;max-width:680px;margin:0 auto}
+  .pill{font-size:13px;padding:8px 16px;border-radius:99px;border:1px solid var(--line);color:var(--text-soft);background:var(--panel)}
+
+  .band{margin:30px 0 10px;border-radius:24px;padding:54px 28px;text-align:center;
+    background:linear-gradient(125deg,#0E7A6E,#1c2030);border:1px solid var(--line)}
+  .band h2{font-size:clamp(24px,4vw,34px);margin-bottom:14px}
+  .band p{color:var(--text-soft);max-width:520px;margin:0 auto 26px}
+
+  .privacy{max-width:680px;margin:34px auto 0;text-align:center;font-size:13px;color:var(--text-mute);line-height:1.7}
+  footer{text-align:center;padding:38px 0 54px;color:var(--text-mute);font-size:13.5px}
+  footer b{color:var(--teal)}
+  @media(max-width:560px){.hero{padding:64px 0 40px}}
+  @media(prefers-reduced-motion:reduce){.orb{animation:none}.cta{transition:none}}
+  .cta:focus-visible,a:focus-visible{outline:3px solid var(--teal);outline-offset:3px;border-radius:6px}
 </style>
 </head>
 <body>
-  <p>Opening <b>Decode Your Pattern</b>…<br><a href="decode-your-pattern_6.html">Continue&nbsp;→</a></p>
+<div class="bg"><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div></div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">A personal pattern assessment</p>
+    <h1>Decode Your <span class="grad">Pattern</span></h1>
+    <p class="lede">Answer a few honest questions and get a personalised, explainable read of how you actually operate — your strengths, your blind spots, and a clear plan to move forward.</p>
+    <a class="cta" href="decode-your-pattern_6.html">Get my report →</a>
+    <p class="cta-note">Free · runs in your browser · no sign-up · ~10–15 minutes</p>
+
+    <div class="peek">
+      <div class="num">672</div>
+      <div class="meta">
+        <div class="k">Your Pattern Score</div>
+        <div class="v">A single 300–900 read of how you live — like a credit score, but for your behaviour.</div>
+      </div>
+    </div>
+  </header>
+
+  <section class="section">
+    <h2>What you'll get</h2>
+    <p class="sub">A clear, honest report generated entirely from your own answers — no two are the same.</p>
+    <div class="grid">
+      <div class="card"><div class="ic">📊</div><h3>Pattern Score</h3><p>A single 300–900 score with honest bands, plus a grade for each of your 10 dimensions.</p></div>
+      <div class="card"><div class="ic">🧭</div><h3>Colourful charts</h3><p>A radar of your overall shape and clear bars showing where you're strong and where you're stretched.</p></div>
+      <div class="card"><div class="ic">🔍</div><h3>An honest read</h3><p>A point-by-point look at how you operate — your styles, hidden potential, and blind spots. No flattery.</p></div>
+      <div class="card"><div class="ic">🎧</div><h3>Tailored picks</h3><p>Book, podcast and TED-talk / video suggestions matched to your weakest areas — plus a quote chosen to fit you.</p></div>
+      <div class="card"><div class="ic">🗺️</div><h3>An action plan</h3><p>Real scenarios where your weak spots bite, a growth toolkit, and steps for this week, month and year.</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>How it works</h2>
+    <p class="sub">Three simple steps. Everything happens privately, in your browser.</p>
+    <div class="steps">
+      <div class="step"><h3>Answer honestly</h3><p>A fresh mix of practical, logical and psychological questions, plus your real likes and triggers.</p></div>
+      <div class="step"><h3>Get scored</h3><p>Your answers are turned into a Pattern Score across 10 behavioural dimensions.</p></div>
+      <div class="step"><h3>Read your report</h3><p>A personalised, explainable report you can download or share — and retake to track over time.</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>10 dimensions of how you operate</h2>
+    <p class="sub">Every report measures these — then shows you the pattern they form together.</p>
+    <div class="pills">
+      <span class="pill">Awareness</span><span class="pill">Action</span><span class="pill">Discipline</span>
+      <span class="pill">Resilience</span><span class="pill">Adaptability</span><span class="pill">Self-trust</span>
+      <span class="pill">Boundaries</span><span class="pill">Patience</span><span class="pill">Clarity</span><span class="pill">Growth</span>
+    </div>
+  </section>
+
+  <section class="band">
+    <h2>Ready to see your pattern?</h2>
+    <p>It takes about 10–15 minutes, and the report is yours to keep. No account, no tracking.</p>
+    <a class="cta" href="decode-your-pattern_6.html">Get my report →</a>
+  </section>
+
+  <p class="privacy">This is a reflective tool for self-insight — not a clinical, medical, or scientifically validated assessment, and it shouldn't be read as a fixed diagnosis. Everything runs locally in your browser; nothing you enter is sent anywhere.</p>
+
+  <footer>
+    Decode Your Pattern — created by <b>Antara Barman</b>
+  </footer>
+</div>
 </body>
 </html>

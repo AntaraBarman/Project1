@@ -3,8 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Decode your pattern — the full assessment</title>
+<title>Decode Your Pattern — the assessment</title>
 <meta name="description" content="Decode Your Pattern — a free, personalised self-reflection assessment. A fresh mix of questions each time, scored across 10 dimensions into a credit-score-style Pattern Score, with colourful charts, an honest read, scenarios, and a personal action plan. Runs in your browser.">
+<meta name="theme-color" content="#14171f">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Decode Your Pattern">
+<meta property="og:description" content="A free, personalised, explainable read of how you actually operate — Pattern Score, charts, an honest read, and a clear action plan. Runs in your browser.">
+<meta property="og:url" content="https://antarabarman.github.io/Project1/">
+<meta property="og:image" content="https://antarabarman.github.io/Project1/social-preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://antarabarman.github.io/Project1/social-preview.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -732,6 +742,12 @@
       <div class="toolkit-grid" id="toolkit-grid"></div>
     </div>
 
+    <div class="section-card accent-quote">
+      <p class="label">A quote for you</p>
+      <blockquote id="personal-quote-text" class="personal-quote"></blockquote>
+      <p id="personal-quote-author" class="personal-quote-author"></p>
+    </div>
+
     <div class="section-card accent-plan">
       <p class="label">Your action plan</p>
       <div class="plan-block">
@@ -767,7 +783,6 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
 const PARAMS = {
   awareness:    {label:"Awareness",    color:"#3b82f6", terrain:"watchtower"},
@@ -1708,6 +1723,10 @@ function computeAndShowResult(){
   document.getElementById('tier-card-bottom').style.background = `${bottomColor}22`;
   document.getElementById('tier-card-bottom').style.borderColor = `${bottomColor}55`;
 
+  const quote = buildPersonalQuote(dimScores);
+  document.getElementById('personal-quote-text').textContent = `"${quote.text}"`;
+  document.getElementById('personal-quote-author').textContent = `— ${quote.author}`;
+
   const plan = buildActionPlan(dimScores, personalAnswers);
   const fillPlan = (elId, items) => {
     const el = document.getElementById(elId);
@@ -1715,7 +1734,10 @@ function computeAndShowResult(){
     items.forEach((text, i) => {
       const item = document.createElement('div');
       item.className = 'plan-item';
-      item.innerHTML = `<span class="plan-num">${i+1}</span><span class="plan-text">${text}</span>`;
+      // Build with textContent so any user-entered goal/obstacle can't inject HTML (XSS-safe).
+      const num = document.createElement('span'); num.className = 'plan-num'; num.textContent = i + 1;
+      const body = document.createElement('span'); body.className = 'plan-text'; body.textContent = text;
+      item.appendChild(num); item.appendChild(body);
       el.appendChild(item);
     });
   };
@@ -2158,13 +2180,7 @@ function renderV2(dimScores, overall){
   renderTimeline();
 }
 
-/* ---------- 11. Email delivery (no hosting) + file download ---------- */
-// To enable real automatic email (still no server of your own), create a free EmailJS
-// account, then paste your keys below. Until then, the button opens the user's mail app.
-const EMAILJS={ publicKey:'YOUR_PUBLIC_KEY', serviceId:'YOUR_SERVICE_ID', templateId:'YOUR_TEMPLATE_ID' };
-const EMAILJS_READY = EMAILJS.publicKey && EMAILJS.publicKey.indexOf('YOUR_')!==0;
-try{ if(EMAILJS_READY && window.emailjs) emailjs.init({publicKey:EMAILJS.publicKey}); }catch(e){}
-
+/* ---------- 11. Report text + downloadable file ---------- */
 function buildReportText(){
   const d=lastDimScores||{}; const ps=lastPatternScore;
   const lines=[];
@@ -2181,26 +2197,6 @@ function buildReportText(){
   lines.push('');
   lines.push('— Decode your pattern, created by Antara Barman');
   return lines.join('\n');
-}
-function emailReport(){
-  const status=document.getElementById('email-status');
-  const email=(document.getElementById('email-deliver').value||profile.email||'').trim();
-  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ status.style.color='#e07a5a'; status.textContent='Enter a valid email address first.'; return; }
-  const body=buildReportText();
-  const subject='Your Decode Your Pattern report'+(profile.name?' — '+profile.name:'');
-  if(EMAILJS_READY && window.emailjs){
-    status.style.color=''; status.textContent='Sending…';
-    emailjs.send(EMAILJS.serviceId, EMAILJS.templateId, {to_email:email, subject:subject, name:profile.name||'there', message:body})
-      .then(()=>{ status.style.color='#7ee08a'; status.textContent='Sent to '+email+'. Check your inbox (and spam).'; })
-      .catch(err=>{ console.error(err); status.style.color='#e07a5a'; status.textContent='Email service failed — opening your mail app instead.'; _mailto(email,subject,body); });
-  } else {
-    _mailto(email,subject,body);
-    status.style.color=''; status.textContent='Opened your email app with the report ready to send. (For fully automatic sending, see SETUP_GITHUB.md to add free EmailJS keys.)';
-  }
-}
-function _mailto(email,subject,body){
-  const url='mailto:'+encodeURIComponent(email)+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body.slice(0,1800));
-  window.location.href=url;
 }
 function downloadHtmlReport(){
   const txt=buildReportText();
@@ -2337,8 +2333,7 @@ function buildToolkitFor(k){
   const tk=TOOLKIT[k], b=BOOKS[k], w=WATCH_RECS[k], col=PARAMS[k].color;
   return [
    {cat:'Book',col,html:`<b>${b.title}</b> — ${b.author}. ${b.why}`},
-   {cat:'Talk',col,html:`<b>${w.title}</b> · ${w.channel}. <a href="${w.url}" target="_blank" rel="noopener">Watch ↗</a>`},
-   {cat:'Podcast',col,html:`<b>${tk.podcast[0]}</b> — ${tk.podcast[1]}.`},
+   {cat:'Podcast',col,html:`<b>${w.title}</b> · ${w.channel}. <a href="${w.url}" target="_blank" rel="noopener">▶ Watch on YouTube ↗</a>`},
    {cat:'Daily habit',col,html:tk.habit},
    {cat:'Meditation',col,html:tk.meditation},
    {cat:'App',col,html:`<b>${tk.app[0]}</b> — ${tk.app[1]}.`}

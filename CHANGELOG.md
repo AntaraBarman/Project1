@@ -4,6 +4,19 @@ All notable changes to this project are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/), and this project aims to follow
 [Semantic Versioning](https://semver.org/).
 
+## [1.3.0] — 2026-06 — Production-hardening audit
+### Security
+- Removed a **self-XSS vector**: user-entered goal/obstacle text is now rendered via `textContent`, never `innerHTML`, in the action plan.
+- Dropped the unused **EmailJS** dependency and its placeholder config (one fewer third-party script and no dangling keys).
+### Performance
+- One fewer external script load on the assessment page (EmailJS removed).
+### SEO / sharing
+- Added **Open Graph + Twitter Card** meta and a dedicated `social-preview.png` (1200×630) so links render a rich preview on LinkedIn/X. Added `theme-color` and `canonical`.
+### Accessibility
+- Landing now respects `prefers-reduced-motion` and adds visible `:focus-visible` outlines.
+### DevOps
+- CI now runs the **backend test suite** (`pytest`) on every push; added a backend `.dockerignore`.
+
 ## [Unreleased]
 ### Planned (v2)
 - React + TypeScript + Tailwind frontend; FastAPI backend; Postgres/SQLite.
@@ -18,7 +31,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 - Premium **style insights** (decision-making, communication, stress, learning, hidden potential, blind spots).
 - **Badges** + on-device **progress tracking**.
 - **Growth toolkit**: book, talk, podcast, daily habit, meditation, app — matched to weakest dimensions.
-- **Mandala-art share card** (Canvas → PNG) for LinkedIn/WhatsApp.
+- **Colourful share card** (Canvas → PNG) for LinkedIn/WhatsApp.
 - Production documentation suite: architecture (+Mermaid), case study, explainability, data model, API, deployment.
 
 ### Changed
