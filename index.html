@@ -64,6 +64,10 @@
   .section .sub{text-align:center;color:var(--text-soft);max-width:560px;margin:0 auto 36px;font-size:15.5px}
 
   .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+  .grid-3{grid-template-columns:repeat(3,1fr)}
+  .grid-4{grid-template-columns:repeat(4,1fr)}
+  @media(max-width:840px){.grid-3,.grid-4{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.grid-3,.grid-4{grid-template-columns:1fr}}
   .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px 22px}
   .card .ic{font-size:30px;margin-bottom:12px;line-height:1}
   .card h3{font-size:19px;margin-bottom:8px;color:#fbf8ef}
@@ -114,14 +118,30 @@
   </header>
 
   <section class="section">
+    <h2>Why decode your pattern?</h2>
+    <p class="sub">You track your steps, your sleep, even your credit score. But the one thing quietly shaping your career, money, relationships and stress — your own behavioural patterns — you've never actually measured.</p>
+    <div class="grid grid-3">
+      <div class="card"><div class="ic">🔁</div><h3>The same problems repeat</h3><p>The job that feels like the last one. The argument you keep having. That's rarely bad luck — it's a pattern that hasn't been named yet. And you can't change what you can't see.</p></div>
+      <div class="card"><div class="ic">🪞</div><h3>An honest mirror, not flattery</h3><p>Most quizzes hand you a flattering label and hide the reasoning. This does the opposite — it shows the real picture, strengths <em>and</em> blind spots, with the <em>why</em> behind every observation.</p></div>
+      <div class="card"><div class="ic">🧭</div><h3>Clarity you can act on</h3><p>Naming a pattern is 80% of changing it. You walk away with specific, doable next moves — so your next chapter gets written on purpose, not by default.</p></div>
+      <div class="card"><div class="ic">⏳</div><h3>Time raises the price</h3><p>An unnamed pattern doesn't stay still — it compounds. The conversation, the habit, the money mistake all get more expensive the longer they wait. Spot it early, fix it cheaply.</p></div>
+      <div class="card"><div class="ic">🧠</div><h3>Self-awareness is the edge</h3><p>The people who grow fastest usually aren't the most talented — they're the ones who see themselves clearly. This hands you that clear-eyed view in ten minutes.</p></div>
+      <div class="card"><div class="ic">📈</div><h3>Watch yourself change</h3><p>It's not a one-time label. Retake it in a month and see what actually moved — turning "I think I've grown" into something you can actually see.</p></div>
+    </div>
+  </section>
+
+  <section class="section">
     <h2>What you'll get</h2>
     <p class="sub">A clear, honest report generated entirely from your own answers — no two are the same.</p>
-    <div class="grid">
+    <div class="grid grid-4">
       <div class="card"><div class="ic">📊</div><h3>Pattern Score</h3><p>A single 300–900 score with honest bands, plus a grade for each of your 10 dimensions.</p></div>
       <div class="card"><div class="ic">🧭</div><h3>Colourful charts</h3><p>A radar of your overall shape and clear bars showing where you're strong and where you're stretched.</p></div>
       <div class="card"><div class="ic">🔍</div><h3>An honest read</h3><p>A point-by-point look at how you operate — your styles, hidden potential, and blind spots. No flattery.</p></div>
       <div class="card"><div class="ic">🎧</div><h3>Tailored picks</h3><p>Book, podcast and TED-talk / video suggestions matched to your weakest areas — plus a quote chosen to fit you.</p></div>
-      <div class="card"><div class="ic">🗺️</div><h3>An action plan</h3><p>Real scenarios where your weak spots bite, a growth toolkit, and steps for this week, month and year.</p></div>
+      <div class="card"><div class="ic">🗺️</div><h3>An action plan</h3><p>A growth toolkit and concrete steps for this week, this month and this year — built around your specific weak spots.</p></div>
+      <div class="card"><div class="ic">⚠️</div><h3>Where it'll bite you</h3><p>Real-life scenarios where your weakest patterns tend to trip you up — and the exact move that breaks the loop.</p></div>
+      <div class="card"><div class="ic">🏅</div><h3>Badges &amp; a timeline</h3><p>Earn badges for the shape of your answers, and track your Pattern Score over time as you retake it.</p></div>
+      <div class="card"><div class="ic">📥</div><h3>Download &amp; share</h3><p>Export a clean, page-numbered PDF, save a copy, or generate a colourful score card to share — all in a click.</p></div>
     </div>
   </section>
 
