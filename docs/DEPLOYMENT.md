@@ -8,7 +8,7 @@ backend, database, and LLM.
 1. Push the repo to GitHub (public).
 2. **Settings → Pages → Source: Deploy from a branch → `main` → `/ (root)` → Save.**
 3. ~1 minute later your site is live at `https://<username>.github.io/<repo>/`
-   (currently **https://antarabarman.github.io/Project1/**).
+   (currently **https://antarabarman.github.io/Decode_Your_Pattern/**).
 
 `index.html` is served at the root, so the article loads first and links into the assessment. No build, no
 secrets, no cost.
