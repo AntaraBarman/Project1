@@ -1077,39 +1077,6 @@ function buildArchetype(dimScores) {
   return { name: `the ${ARCHETYPE_ADJ[top2]} ${ARCHETYPE_NOUN[top1]}`, tagline: ARCHETYPE_TAGLINE[top1], top1, top2, sorted };
 }
 
-const NATURE_FRAGMENTS = {
-  awareness: {high: "You tend to notice your own loops before other people have to point them out to you.", low: "Your own patterns tend to stay invisible until someone else names them for you."},
-  action: {high: "You lean toward moving on things rather than circling them for too long.", low: "You tend to sit with a decision longer than the situation actually asks for."},
-  discipline: {high: "What matters to you tends to survive your bad days, because it runs on structure rather than mood.", low: "Your follow-through is closely tied to how motivated you happen to feel that day."},
-  resilience: {high: "Pressure doesn't knock you far off course for long.", low: "Stress and discomfort tend to pull you off track more than you'd like."},
-  adaptability: {high: "You update your approach fairly quickly once it stops working.", low: "You tend to stick with a familiar approach even past the point it's still serving you."},
-  selftrust: {high: "You're generally comfortable standing behind your own judgment, even alone.", low: "You tend to look for outside agreement before fully trusting your own call."},
-  boundaries: {high: "You protect your time and energy with some real consistency.", low: "Other people's urgency has a way of quietly becoming your own."},
-  patience: {high: "You can hold a long game without needing proof of progress every week.", low: "Slow, invisible progress is genuinely difficult for you to sit with."},
-  clarity: {high: "You generally know what you're actually aiming at, even under pressure.", low: "What you want tends to shift depending on who you're around or what you just read."},
-  growth: {high: "You treat setbacks, and other people's mistakes, as raw material rather than noise.", low: "Lessons tend to arrive for you mostly through direct pain rather than observation."}
-};
-
-function buildNature(dimScores) {
-  const sorted = Object.entries(dimScores).sort((a,b) => b[1]-a[1]);
-  const top3 = sorted.slice(0,3).map(([k]) => k);
-  const bottom2 = sorted.slice(-2).map(([k]) => k);
-  const sentences = [];
-  top3.forEach(k => sentences.push(NATURE_FRAGMENTS[k].high));
-  bottom2.forEach(k => { if (!top3.includes(k)) sentences.push(NATURE_FRAGMENTS[k].low); });
-  return sentences.join(" ");
-}
-
-function buildPersonalContext(personal) {
-  const parts = [];
-  if (personal.energizes) parts.push(`You said ${personal.energizes.toLowerCase()} is what actually energizes you, which is worth steering toward more deliberately rather than treating as a side benefit of work.`);
-  if (personal.drains) parts.push(`You named ${personal.drains.toLowerCase()} as what drains you fastest — that's useful to know before committing to more of it just because you're capable of handling it.`);
-  if (personal.goal_year) parts.push(`The outcome you're aiming for this year is "${personal.goal_year}."`);
-  if (personal.obstacle) parts.push(`You see "${personal.obstacle}" as the main thing standing between you and that outcome — which is exactly the obstacle the action plan below is built around.`);
-  if (parts.length === 0) return "No additional context was given here, which is fine — the rest of this report still stands on the 50-question assessment alone.";
-  return parts.join(" ");
-}
-
 const TENSION_RULES = [
   {test:(d)=> d.action>=7 && d.patience<=4, text:"You move fast, but slow payoffs test you. You may be abandoning genuinely good long plays too early simply because the progress isn't visible yet."},
   {test:(d)=> d.awareness>=7 && d.action<=4, text:"You can see your own patterns clearly, but that seeing isn't yet converting into movement. Insight without action is its own kind of loop."},
@@ -1123,32 +1090,7 @@ const TENSION_RULES = [
   {test:(d)=> d.discipline<=4 && d.clarity>=7, text:"You know precisely what you want, but the daily systems to actually get there haven't caught up yet. The destination is clear; the road isn't built."}
 ];
 
-function buildPattern(dimScores) {
-  const matched = TENSION_RULES.filter(r => r.test(dimScores));
-  if (matched.length > 0) return matched[0].text;
-  const sorted = Object.entries(dimScores).sort((a,b)=>b[1]-a[1]);
-  const top = sorted[0], bottom = sorted[sorted.length-1];
-  const spread = top[1] - bottom[1];
-  if (spread <= 1) {
-    return "Your scores are unusually even across all 10 dimensions — no single area is quietly dragging on the others right now. That's a genuinely good place to play from, though it can also mean no one area is pulling you forward especially hard either.";
-  }
-  return `Your strength in ${PARAMS[top[0]].label.toLowerCase()} (${top[1]}/10) is doing real work for you, while ${PARAMS[bottom[0]].label.toLowerCase()} (${bottom[1]}/10) is the dimension most likely to quietly cap how far the rest can take you.`;
-}
-
-
-// --- Strengths and improvement phrasing, keyed per dimension ---
-const STRENGTH_PHRASES = {
-  awareness: "You notice your own patterns before other people have to point them out.",
-  action: "When something needs to happen, you tend to actually start it.",
-  discipline: "What matters to you keeps running even on days you don't feel like it.",
-  resilience: "Pressure and setbacks don't knock you off course for long.",
-  adaptability: "You're willing to change an approach the moment it stops working.",
-  selftrust: "You can make a hard call alone and stand behind it afterward.",
-  boundaries: "You protect your time and energy with real consistency.",
-  patience: "You can hold a long game without needing proof of progress every week.",
-  clarity: "You generally know what you're actually aiming at, even under pressure.",
-  growth: "You convert setbacks, yours and other people's, into real lessons."
-};
+// --- Improvement phrasing, keyed per dimension (used by the insights + pattern-notice engines) ---
 const IMPROVEMENT_PHRASES = {
   awareness: "Your own patterns tend to stay invisible until someone else names them for you.",
   action: "Insight and intention don't always make it to an actual first move.",
@@ -1161,16 +1103,6 @@ const IMPROVEMENT_PHRASES = {
   clarity: "What you want can shift depending on who you're around or what you just read.",
   growth: "Lessons tend to arrive mostly through direct pain rather than observation."
 };
-
-function buildStrengthsAndImprovements(dimScores) {
-  const sorted = Object.entries(dimScores).sort((a,b)=>b[1]-a[1]);
-  const top5 = sorted.slice(0,5).map(([k])=>k);
-  const bottom5 = sorted.slice(-5).map(([k])=>k).reverse();
-  return {
-    strengths: top5.map(k => ({ dim: k, label: PARAMS[k].label, text: STRENGTH_PHRASES[k] })),
-    improvements: bottom5.map(k => ({ dim: k, label: PARAMS[k].label, text: IMPROVEMENT_PHRASES[k] }))
-  };
-}
 
 // --- Real, verifiable books, one per dimension ---
 const BOOKS = {
@@ -1185,14 +1117,6 @@ const BOOKS = {
   clarity: { title: "Essentialism", author: "Greg McKeown", why: "A case for deciding what actually matters so the rest stops competing for your attention." },
   growth: { title: "Mindset", author: "Carol S. Dweck", why: "The research behind treating setbacks and effort as the mechanism of growth, not evidence against you." }
 };
-const BOOK_SPINE_COLORS = ["#4a7fb5","#c2603a","#9a8a3a","#5f8a52","#3a9a9a","#a06bb0","#b04a6a","#5a7aba","#c0a03a","#6aaa3a"];
-
-function buildBookRecs(dimScores) {
-  const sorted = Object.entries(dimScores).sort((a,b)=>a[1]-b[1]);
-  const weakest2 = sorted.slice(0,2).map(([k])=>k);
-  return weakest2.map(k => ({ dim: k, ...BOOKS[k] }));
-}
-
 // --- Watch/listen recommendations: specific videos, each individually verified to exist and be live ---
 const WATCH_RECS = {
   awareness: { title: "How to Focus to Change Your Brain", channel: "Huberman Lab Essentials", why: "Covers how focused attention drives neuroplasticity, including a section specifically on recognition and awareness of your own behaviors.", url: "https://www.youtube.com/watch?v=4AwyVTHEU3s" },
@@ -1206,32 +1130,6 @@ const WATCH_RECS = {
   clarity: { title: "How great leaders inspire action", channel: "Simon Sinek, TEDxPugetSound", why: "The Golden Circle framework for identifying what you actually want and why, instead of borrowed goals.", url: "https://www.youtube.com/watch?v=u4ZoJKF_VuA" },
   growth: { title: "How to overcome your mistakes", channel: "TED-Ed", why: "A concise explainer on what actually blocks people from learning from failure, and how to fix it.", url: "https://www.youtube.com/watch?v=eBz7iUJu9UM" }
 };
-
-function buildWatchRecs(dimScores) {
-  const sorted = Object.entries(dimScores).sort((a,b)=>a[1]-b[1]);
-  const weakest2 = sorted.slice(0,2).map(([k])=>k);
-  return weakest2.map(k => ({ dim: k, ...WATCH_RECS[k] }));
-}
-
-// --- Fact-based brain tips, grounded in established findings, picked for the two weakest dimensions ---
-const BRAIN_TIPS = {
-  awareness: { title: "Writing it down recruits a different brain system", text: "Putting a feeling or pattern into words engages the prefrontal cortex in a way that pure rumination doesn't, which is part of why naming a pattern on paper often makes it easier to manage than just thinking about it." },
-  action: { title: "Starting lowers the activation cost", text: "The brain's basal ganglia treat the first small action of a task as the costliest part — once movement begins, momentum is biologically easier to sustain than to initiate, which is why a tiny first step matters more than willpower." },
-  discipline: { title: "Repetition is what builds a habit loop", text: "Habits form through a cue-routine-reward loop encoded in the basal ganglia; consistency, not intensity, is what shifts a behavior from effortful to automatic." },
-  resilience: { title: "The stress response is built to be temporary", text: "The amygdala's alarm response is designed to spike and then subside as cortisol clears — chronic stress comes from repeated triggering, not from the response itself being permanent." },
-  adaptability: { title: "The brain favors the familiar by default", text: "Neural pathways that have fired together often become the path of least resistance, which is why switching strategies takes deliberate effort even after a strategy stops working." },
-  selftrust: { title: "Repeated outside-checking weakens the internal signal", text: "Decision-related confidence appears to be partly a learned signal; consistently overriding your own first judgment with others' opinions can make that internal signal harder to access over time." },
-  boundaries: { title: "Saying yes under social pressure is a fast, automatic response", text: "Agreement under immediate social pressure tends to route through fast, automatic processing rather than deliberate evaluation, which is why a pause before answering measurably changes the decision." },
-  patience: { title: "Dopamine responds to anticipation, not just reward", text: "Dopamine activity rises during the anticipation of a delayed reward, not only at the moment of receiving it — which is part of why a visible progress marker makes waiting easier than waiting with no marker at all." },
-  clarity: { title: "Decision fatigue is a measurable cognitive cost", text: "The quality of decisions tends to decline after a long sequence of unrelated choices in a day, which is one reason vague, ever-shifting goals are harder to sustain than one written, specific target." },
-  growth: { title: "The brain treats mistakes as one of its strongest learning signals", text: "Error-related neural activity (often studied via the error-related negativity response) shows the brain registers mistakes distinctly and quickly, which is part of the basis for treating setbacks as data rather than just discomfort." }
-};
-
-function buildBrainTips(dimScores) {
-  const sorted = Object.entries(dimScores).sort((a,b)=>a[1]-b[1]);
-  const weakest2 = sorted.slice(0,2).map(([k])=>k);
-  return weakest2.map(k => BRAIN_TIPS[k]);
-}
 
 // --- Verified, accurately attributed quotes from public-domain / long-deceased sources ---
 const QUOTES = {
@@ -2114,58 +2012,7 @@ function buildScenarios(dimScores){
   return weak.map(k=>({dim:k, ...SCENARIOS[k][0]}));
 }
 
-/* ---------- 7. Sticky-note reflections (in their words) ---------- */
-function buildStickyNotes(dimScores){
-  const notes=[];
-  // their own reflection answers
-  answers.forEach((a,i)=>{ if(a && questions[i] && questions[i].type==='reflection' && a.text && a.text.trim()){
-    notes.push({h:'You wrote', t:'“'+a.text.trim()+'”'}); }});
-  if(personalAnswers.goal_year) notes.push({h:'Your goal', t:'“'+personalAnswers.goal_year+'”'});
-  if(personalAnswers.obstacle) notes.push({h:'Your obstacle', t:'You named this as what\'s in the way: “'+personalAnswers.obstacle+'” — the plan below is built around it, not around ignoring it.'});
-  // generated reflective prompts for weakest two
-  const weak=Object.entries(dimScores).sort((a,b)=>a[1]-b[1]).slice(0,2).map(([k])=>k);
-  const PROMPT={awareness:"This week, name the pattern out loud before you react to it.",action:"Pick the one thing you're avoiding. First 15 minutes, today.",discipline:"What's the bare-minimum version of your key habit on a bad day?",resilience:"What's my 24-hour reset after a setback?",adaptability:"What am I still doing out of habit that no longer fits?",selftrust:"Make one small call this week without asking anyone.",boundaries:"Practice one low-stakes 'no' before the week ends.",patience:"What leading indicator can I track instead of the outcome?",clarity:"One sentence: what am I actually optimising for this year?",growth:"Whose failure can I learn from before my next big move?"};
-  weak.forEach(k=>notes.push({h:'Try this — '+PARAMS[k].label, t:PROMPT[k]}));
-  if(trickyProfile.trigger) notes.push({h:'Catch the trigger', t:'When you feel "'+trickyProfile.trigger.toLowerCase()+'", pause for one breath before responding. That pause is where the choice lives.'});
-  const cls=['y','p','b','g','o','v'];
-  return notes.slice(0,6).map((n,i)=>({...n, cls:cls[i%cls.length]}));
-}
-
-/* ---------- 8. Animated brain SVG ---------- */
-function brainSVG(){
-  return `<svg class="brain-svg" viewBox="0 0 220 170" width="220" role="img" aria-label="Animated illustration of a brain">
-    <path d="M70 30 C40 28 26 52 36 72 C20 84 26 112 50 116 C54 138 92 144 104 124 L104 40 C100 26 84 24 70 30 Z" fill="#a855f7" opacity="0.16" stroke="#a855f7" stroke-width="2"/>
-    <path d="M150 30 C180 28 194 52 184 72 C200 84 194 112 170 116 C166 138 128 144 116 124 L116 40 C120 26 136 24 150 30 Z" fill="#06b6d4" opacity="0.16" stroke="#06b6d4" stroke-width="2"/>
-    <line x1="110" y1="36" x2="110" y2="128" stroke="#19D5BF" stroke-width="2" opacity="0.5"/>
-    <path class="flow" d="M62 60 C84 56 92 78 78 92" fill="none" stroke="#ec4899" stroke-width="2"/>
-    <path class="flow" d="M158 60 C136 56 128 78 142 92" fill="none" stroke="#22c55e" stroke-width="2"/>
-    <path class="flow" d="M70 100 C90 104 96 86 110 96" fill="none" stroke="#f59e0b" stroke-width="2"/>
-    <circle class="spark" cx="62" cy="60" r="3" fill="#ec4899"/>
-    <circle class="spark" cx="158" cy="60" r="3" fill="#22c55e" style="animation-delay:.5s"/>
-    <circle class="spark" cx="78" cy="92" r="3" fill="#a855f7" style="animation-delay:1s"/>
-    <circle class="spark" cx="142" cy="92" r="3" fill="#06b6d4" style="animation-delay:1.4s"/>
-    <circle class="pulse" cx="110" cy="82" r="6" fill="#19D5BF"/>
-  </svg>`;
-}
-
-/* ---------- 9. Triggers & tells ---------- */
-function buildTriggers(dimScores){
-  let html='<div class="tt-grid">';
-  const chip=(label,val,color)=> val?`<span class="tt-chip" style="border-color:${color}66;background:${color}1f;color:${color}">${label}: ${val}</span>`:'';
-  html+=chip('Trigger',trickyProfile.trigger,'#f97316');
-  html+=chip('Core driver',trickyProfile.driver,'#ec4899');
-  html+=chip('Core value',trickyProfile.value,'#6366f1');
-  html+=chip('Quiet fear',trickyProfile.fear,'#06b6d4');
-  html+=chip('Energised by',personalAnswers.energizes,'#22c55e');
-  html+=chip('Drained by',personalAnswers.drains,'#ef4444');
-  html+=chip('Recovers via',personalAnswers.support,'#06b6d4');
-  html+='</div>';
-  if(trickyProfile.trigger){ html+=`<p class="tt-block"><span class="tt-k">In practice:</span> ${TRIGGER_LOOP[trickyProfile.trigger]||''}</p>`; }
-  if(trickyProfile.driver){ html+=`<p class="tt-block"><span class="tt-k">What it costs:</span> Your driver is ${DRIVER_NOTE[trickyProfile.driver]||'worth watching'}.</p>`; }
-  return html;
-}
-
-/* ---------- 10. Render orchestration for all v2 sections ---------- */
+/* ---------- Render orchestration for all report sections ---------- */
 let lastPatternScore=null, lastPoints=[], lastGeneratedAt='';
 function renderV2(dimScores, overall){
   // pattern score
@@ -2392,117 +2239,6 @@ function buildAvatar(d){
   let best=AVATARS.explorer,bs=-1;
   for(const k in AVATARS){ const a=AVATARS[k]; const s=a.dims.reduce((t,x)=>t+(d[x]||0),0)/a.dims.length; if(s>bs){bs=s;best=a;} }
   return best;
-}
-function surpriseContrast(d){
-  if(d.clarity>=7&&d.resilience<=4) return "Although you present as clear and logical, your answers suggest stress sways your final calls more than you'd like to admit.";
-  if(d.selftrust>=7&&d.awareness<=4) return "You move with real confidence — but it may be running a step ahead of how well you actually know your own patterns.";
-  if(d.action>=7&&d.patience<=4) return "You look like a natural doer, yet the slow, long-payoff wins are exactly where you quietly struggle most.";
-  if(d.boundaries<=4&&d.selftrust>=6) return "You trust your own judgment, but you don't always defend the time and energy needed to act on it.";
-  if(d.growth>=7&&d.resilience<=4) return "You learn fast from setbacks — they just seem to cost you more than they really need to.";
-  return null;
-}
-function buildStory(d){
-  const sorted=Object.entries(d).sort((a,b)=>b[1]-a[1]);
-  const top=sorted[0], low=sorted[sorted.length-1]; const L=k=>PARAMS[k].label.toLowerCase();
-  const name=profile.name?profile.name.split(' ')[0]:'You';
-  const parts=[];
-  parts.push(`${name} started this thinking you already knew yourself — and your answers tell a slightly more interesting story.`);
-  const sc=surpriseContrast(d); if(sc) parts.push(sc);
-  parts.push(`Your strongest current is ${L(top[0])}, doing real work for you (often quietly). But ${L(low[0])} keeps showing up as the place things snag.`);
-  if(trickyProfile.driver) parts.push(`Underneath runs a need for ${trickyProfile.driver.replace(/^Being /,'').toLowerCase()} — shaping more of your choices than you'd probably say out loud.`);
-  parts.push(`None of this is fixed. It's the current draft — and the next chapter gets written in small daily moves, not one dramatic one.`);
-  return parts.join(' ');
-}
-function renderAvatarStory(d){
-  const a=buildAvatar(d);
-  document.getElementById('avatar-emblem').textContent=a.emoji;
-  document.getElementById('avatar-name').textContent='Your avatar: '+a.name;
-  document.getElementById('avatar-line').textContent=a.line;
-  document.getElementById('story-text').textContent=buildStory(d);
-}
-
-function buildDNA(d){
-  const code=PARAM_KEYS.map(k=>PARAMS[k].label.slice(0,2).toUpperCase()+d[k]).join(' · ');
-  return {code, dims:PARAM_KEYS.map(k=>({label:PARAMS[k].label,score:d[k],color:PARAMS[k].color}))};
-}
-function renderDNA(d){
-  const dna=buildDNA(d);
-  document.getElementById('dna-code').textContent='PATTERN DNA › '+dna.code;
-  const wrap=document.getElementById('dna-bars'); wrap.innerHTML='';
-  dna.dims.forEach(t=>{
-    const blocks='█'.repeat(t.score)+'░'.repeat(10-t.score);
-    const row=document.createElement('div'); row.className='dna-row';
-    row.innerHTML=`<span class="dna-name">${t.label}</span><span class="dna-blocks" style="color:${t.color}">${blocks}</span>`;
-    wrap.appendChild(row);
-  });
-}
-
-const DOMAINS=[
- {name:'Career',emoji:'💼',dims:['discipline','clarity','action','growth']},
- {name:'Relationships',emoji:'💞',dims:['boundaries','awareness','selftrust','resilience']},
- {name:'Health & Stress',emoji:'🌿',dims:['resilience','patience','boundaries']},
- {name:'Money',emoji:'💰',dims:['discipline','patience','clarity']},
- {name:'Learning',emoji:'📈',dims:['growth','awareness','adaptability']},
- {name:'Leadership',emoji:'🚩',dims:['selftrust','clarity','action','boundaries']}
-];
-function domainPct(d,dom){ return Math.round(dom.dims.reduce((t,k)=>t+d[k],0)/dom.dims.length*10); }
-function domainRead(pct){
-  if(pct>=70) return "Strong footing here — an area you can lead from.";
-  if(pct>=50) return "Solid but uneven — a couple of habits would lift it noticeably.";
-  return "The most friction shows up here right now — worth deliberate attention.";
-}
-function renderDomains(d){
-  const grid=document.getElementById('domain-grid'); grid.innerHTML='';
-  DOMAINS.forEach(dom=>{
-    const pct=domainPct(d,dom); const col=pct>=70?'#22c55e':pct>=50?'#f59e0b':'#ef4444';
-    const card=document.createElement('div'); card.className='domain-card';
-    card.innerHTML=`<div class="domain-head"><span class="domain-name">${dom.emoji} ${dom.name}</span><span class="domain-pct" style="color:${col}">${pct}/100</span></div>
-      <div class="domain-bar"><div class="domain-fill" style="width:${pct}%;background:${col}"></div></div>
-      <div class="domain-read">${domainRead(pct)}</div>`;
-    grid.appendChild(card);
-  });
-}
-
-const COMPETENCIES=[
- {name:'Problem Solving',dims:['clarity','adaptability','growth']},
- {name:'Communication',dims:['boundaries','awareness','selftrust']},
- {name:'Leadership',dims:['selftrust','clarity','action']},
- {name:'Learning Speed',dims:['growth','adaptability','awareness']},
- {name:'Analytical Thinking',dims:['clarity','awareness']},
- {name:'Execution & Reliability',dims:['discipline','action','patience']},
- {name:'Resilience',dims:['resilience','patience']},
- {name:'Collaboration',dims:['boundaries','awareness']}
-];
-function renderRecruiter(d){
-  const wrap=document.getElementById('recruiter-bars'); wrap.innerHTML='';
-  COMPETENCIES.forEach(c=>{
-    const pct=Math.round(c.dims.reduce((t,k)=>t+d[k],0)/c.dims.length*10); const gd=gradeFor(pct/10);
-    const row=document.createElement('div'); row.className='dimbar-row';
-    row.innerHTML=`<span class="dimbar-name" style="width:158px">${c.name}</span><span class="dimbar-track"><span class="dimbar-fill" style="background:${gd[1]};color:${gd[1]};width:${pct}%"></span></span><span class="dimbar-val">${pct}/100<span class="dimbar-grade" style="background:${gd[1]}22;color:${gd[1]}">${gd[0]}</span></span>`;
-    wrap.appendChild(row);
-  });
-}
-
-function buildWrapped(d){
-  const sorted=Object.entries(d).sort((a,b)=>b[1]-a[1]);
-  const ins=buildInsights(d,trickyProfile);
-  const learn=ins.find(i=>i.t==='Learning style');
-  const think=learn?learn.x.split('.')[0]:'Balanced';
-  return [
-   {label:'Top strength',value:PARAMS[sorted[0][0]].label,color:PARAMS[sorted[0][0]].color},
-   {label:'Growth focus',value:PARAMS[sorted[sorted.length-1][0]].label,color:PARAMS[sorted[sorted.length-1][0]].color},
-   {label:'Pattern Score',value:(lastPatternScore?lastPatternScore.score+' / 900':'—'),color:'#0a9bba'},
-   {label:'Thinking style',value:think,color:'#a855f7'},
-   {label:'Your avatar',value:buildAvatar(d).name,color:'#f59e0b'}
-  ];
-}
-function renderWrapped(d){
-  const grid=document.getElementById('wrap-grid'); grid.innerHTML='';
-  buildWrapped(d).forEach(w=>{
-    const card=document.createElement('div'); card.className='wrap-card'; card.style.background=w.color;
-    card.innerHTML=`<div class="w-label">${w.label}</div><div class="w-value">${w.value}</div>`;
-    grid.appendChild(card);
-  });
 }
 
 function renderTimeline(){

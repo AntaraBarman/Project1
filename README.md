@@ -62,11 +62,9 @@ Or just **[open the live demo](https://antarabarman.github.io/Project1/)**.
 
 ```
 .
-├── index.html                  # Entry point — redirects straight into the assessment
+├── index.html                  # Landing page → "Get my report" opens the assessment
 ├── decode-your-pattern_6.html  # The assessment + report engine (single-file app)
-├── slides/                     # LinkedIn launch carousel (1080×1080)
-├── article.docx                # Source essay
-├── LinkedIn-Article.md         # Long-form launch post
+├── social-preview.png          # Open Graph image for link sharing
 ├── docs/                       # Architecture, case study, API, schema, deployment
 │   ├── ARCHITECTURE.md
 │   ├── CASE_STUDY.md
@@ -74,7 +72,9 @@ Or just **[open the live demo](https://antarabarman.github.io/Project1/)**.
 │   ├── DATA_MODEL.md
 │   ├── API.md
 │   └── DEPLOYMENT.md
-├── .github/workflows/ci.yml    # Lint + HTML validation on every push
+├── phase-b/                    # v2 full-stack scaffold (FastAPI backend + tests)
+│   └── backend/
+├── .github/workflows/ci.yml    # Static checks + backend tests on every push
 ├── CONTRIBUTING.md · SECURITY.md · CHANGELOG.md · ROADMAP.md · LICENSE
 ```
 
