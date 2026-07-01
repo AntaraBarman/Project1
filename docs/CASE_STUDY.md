@@ -49,7 +49,7 @@ feature, not an afterthought.
 | **Single-file v1** | $0 hosting, instant load, zero build, total privacy | Testing isolation is harder → solved with pure functions + a Node harness |
 | **Rule-based engine** | Explainable + deterministic + free | Less "AI magic" → mitigated by a swappable engine interface for v2 |
 | **Inline SVG/Canvas over chart libs** | Smaller payload, full control, prints to PDF cleanly | More hand-written render code → isolated in helpers |
-| **`localStorage` history** | Private, no backend | No cross-device sync → planned for v2 accounts |
+| **`localStorage` feedback backlog** | A local safety-net copy of submitted feedback, private, no backend | No cross-device sync → planned for v2 accounts |
 | **Static now, full-stack later** | Ship value immediately; avoid premature infra | A second architecture to maintain → kept behind a stable engine interface |
 
 ## 5. Scalability considerations

@@ -15,7 +15,8 @@ clean path to a **full production stack** tomorrow. The boundary between the two
 ## <a name="v1"></a>v1 — the live single-file app (today, $0, zero-setup)
 
 v1 is intentionally **dependency-light and serverless**. It runs entirely in the browser and deploys as static
-files on GitHub Pages. This keeps it free, private (no data leaves the device), and trivially shareable.
+files on GitHub Pages. This keeps it free and trivially shareable; the only thing that ever leaves the device
+is an optional feedback submission (see below).
 
 ```mermaid
 flowchart TD
@@ -28,11 +29,12 @@ flowchart TD
     REP --> EXP[Explainability layer]
     REP --> REC[Recommendation Engine]
     REP --> EXTRA[Badges · Wrapped · Avatar]
-    LS[(localStorage<br/>private history)] <--> REP
+    REP --> FB[Optional feedback form]
     AUD[Web Audio API<br/>generative focus music]
   end
   Browser --> CDN[(CDN libs:<br/>jsPDF · html2canvas · fonts)]
   Browser --> PAGES[[GitHub Pages<br/>static hosting]]
+  FB -.->|rating, comments, timestamp only| FORMSPREE[(Formspree)]
 ```
 
 **Module map (within `decode-your-pattern_6.html`)**
@@ -44,8 +46,8 @@ flowchart TD
 | Behavioral Intelligence Engine | Pure functions: `buildInsights`, `buildPatternPoints`, `buildScenarios`, `buildAvatar`, `buildDNA`, domains, recruiter mapping |
 | Recommendation Engine | Maps weakest dimensions → books, talks, podcasts, habits, meditations, apps (each with a *why*) |
 | Explainability | Frames every output as a tendency and surfaces the responses that drove it |
-| Visualisation | Inline SVG (radar, bars, gauge, timeline) + Canvas (colourful share card) |
-| Persistence | `localStorage` history for the progress timeline (per-device, private) |
+| Visualisation | Inline SVG (radar, bars, gauge) + Canvas (colourful share card) |
+| Feedback | Optional end-of-report star rating + comments, posted to a third-party form service |
 
 ---
 
@@ -89,16 +91,16 @@ sequenceDiagram
   participant Score as Scoring
   participant Engine as Intelligence Engine
   participant Report as Report Composer
-  participant Store as localStorage
+  participant FB as Feedback Form
 
   User->>Quiz: answer questions (randomised)
   Quiz->>Score: per-dimension responses
   Score->>Engine: normalised dimScores + profile
   Engine->>Engine: rule evaluation (pure functions)
   Engine->>Report: insights + explanations + recs
-  Report->>Store: append {date, patternScore}
-  Store-->>Report: prior history
-  Report-->>User: render report + progress timeline
+  Report-->>User: render report
+  User->>FB: optional rating + comments
+  FB-->>User: thank-you message (no redirect)
 ```
 
 ---

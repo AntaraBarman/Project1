@@ -15,6 +15,24 @@ secrets, no cost.
 
 > Tip: the live URL is tied to the username + repo name. Don't rename either after sharing, or the link breaks.
 
+### Activating the feedback form (one-time, free)
+
+The "Help Us Improve" feedback form at the end of the report is wired to send submissions via
+[Formspree](https://formspree.io), a free form-to-inbox service, so no backend is needed:
+
+1. Sign up free at [formspree.io](https://formspree.io) and create a new form.
+2. Copy the form endpoint it gives you (looks like `https://formspree.io/f/xxxxxxxx`).
+3. In `decode-your-pattern_6.html`, find the line:
+   ```js
+   const FEEDBACK_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
+   ```
+   and replace `YOUR_FORM_ID` with your real form ID.
+4. Commit and push. From then on, every submitted feedback form emails you directly, and all past
+   submissions are also viewable in your Formspree dashboard.
+
+Until this is set, feedback submissions are only saved locally in the visitor's browser (`localStorage`) —
+they will **not** reach you, so this step is required before the feedback feature is truly "live."
+
 ## v2 — full stack on free tiers
 
 | Layer | Free host | Notes |

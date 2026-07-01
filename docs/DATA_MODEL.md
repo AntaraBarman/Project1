@@ -2,19 +2,25 @@
 
 ## v1 — on-device (today)
 
-v1 has **no database**. The only persisted data is a private, per-device history used for the progress timeline,
-stored in `localStorage` under the key `dyp-history`:
+v1 has **no database**. Answers, dimension scores, and the full report live only in memory for the duration
+of the session and are never written to disk or sent anywhere.
+
+The one exception is the optional **feedback form** at the end of the report. If submitted, it POSTs a small
+JSON payload to a third-party form service (Formspree) and also keeps a local copy in `localStorage` under
+`dyp-feedback-backlog` (capped to the latest 50 entries) as a delivery safety net:
 
 ```jsonc
-// localStorage["dyp-history"]  (capped to the latest 30 entries)
-[
-  { "d": 1750000000000, "score": 612 },   // d = epoch ms, score = Pattern Score (300–900)
-  { "d": 1752600000000, "score": 655 }
-]
+// payload sent to Formspree, and mirrored into localStorage["dyp-feedback-backlog"]
+{
+  "rating": "5",            // 1–5, required
+  "helpful": "Yes",         // "Yes" | "Partially" | "No", required
+  "comments": "",           // optional free text
+  "feature": "",            // optional free text
+  "timestamp": "2026-07-01T10:32:00.000Z"
+}
 ```
 
-Everything else (answers, dimension scores, the full report) lives only in memory for the duration of the
-session and is never written to disk or sent anywhere.
+No name, email, or report content is ever included in the feedback payload.
 
 **In-memory report shape (conceptual):**
 
@@ -48,6 +54,7 @@ erDiagram
   REPORT ||--o{ RECOMMENDATION : contains
   USER ||--o{ COACH_MESSAGE : sends
   REPORT ||--o{ COACH_MESSAGE : grounds
+  REPORT ||--o| FEEDBACK : receives
 
   USER {
     uuid id PK
@@ -104,7 +111,21 @@ erDiagram
     text content
     timestamptz created_at
   }
+  FEEDBACK {
+    uuid id PK
+    uuid report_id FK "nullable — feedback can outlive the report"
+    int rating "1-5"
+    string helpful "Yes | Partially | No"
+    text comments "nullable"
+    text feature_suggestion "nullable"
+    timestamptz created_at
+  }
 ```
+
+`FEEDBACK` is deliberately its own table with no required link to `USER` — v1 collects it from anonymous
+visitors, so `report_id` is nullable and there is no name/email column by design. This still supports
+future analytics (average rating over time, helpful-rate trends, common feature requests) via simple
+aggregates over `FEEDBACK` alone, without ever needing to identify who submitted it.
 
 **Analytics (aggregate, anonymous):** a separate `daily_metrics` rollup table (date, DAU, completion_rate,
 avg_duration, top_strength, top_growth_area, pdf_downloads, return_rate, device_breakdown) populated by a
