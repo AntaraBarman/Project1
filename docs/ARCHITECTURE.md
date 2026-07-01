@@ -43,7 +43,8 @@ flowchart TD
 |---|---|
 | Quiz Engine | Question bank + random sampling, weighted scoring functions, progress, branching hooks |
 | Scoring | Aggregates per-dimension raw/score, normalises to 0–10 and a 300–900 Pattern Score |
-| Behavioral Intelligence Engine | Pure functions: `buildInsights`, `buildPatternPoints`, `buildScenarios`, `buildAvatar`, `buildDNA`, domains, recruiter mapping |
+| Behavioral Intelligence Engine | Pure functions: `buildExecutiveSummary`, `buildBlindSpots`, `buildBehavioralStyles`, `buildFutureTendencies`, `buildWellbeing`, `buildGrowthPlanV2`, `buildScenarios`, `buildAvatar`, `buildDNA`, domains, recruiter mapping |
+| Confidence Meter | `computeDimConfidence`/`worstConfidence`/`confidenceBadge` — derives a Low/Medium/High confidence read per insight from the standard deviation of the raw answers behind each dimension |
 | Recommendation Engine | Maps weakest dimensions → books, talks, podcasts, habits, meditations, apps (each with a *why*) |
 | Explainability | Frames every output as a tendency and surfaces the responses that drove it |
 | Visualisation | Inline SVG (radar, bars, gauge) + Canvas (colourful share card) |
@@ -59,14 +60,14 @@ swap in ML/LLM scoring **without touching the UI**.
 
 ```mermaid
 flowchart LR
-  IN[dimScores 0–10<br/>+ profile + triggers] --> ENG{{Intelligence Engine}}
-  ENG --> O1[Styles<br/>decision/comm/stress/learning]
-  ENG --> O2[Pattern Notice<br/>point-by-point]
-  ENG --> O3[Avatar + Story]
-  ENG --> O4[Pattern DNA]
-  ENG --> O5[Life Domains]
-  ENG --> O6[Recruiter competencies]
-  ENG --> O7[Scenarios + Action Plan]
+  IN[dimScores 0–10<br/>+ profile + triggers + raw answers] --> ENG{{Intelligence Engine}}
+  ENG --> O1[Executive Summary]
+  ENG --> O2[Blind Spots & Growth Areas<br/>+ Confidence Meter]
+  ENG --> O3[Behavioral Pattern Analysis<br/>10 sub-styles]
+  ENG --> O4[Future Tendencies<br/>hedged, probability language]
+  ENG --> O5[Well-being Considerations<br/>non-medical disclaimer]
+  ENG --> O6[Personalized Growth Plan v2]
+  ENG --> O7[Avatar · DNA · Life Domains · Recruiter mode · Scenarios]
   classDef e fill:#0e7490,stroke:#04EEDD,color:#fff
   class ENG e
 ```
@@ -146,7 +147,8 @@ repo). See **[DEPLOYMENT.md](DEPLOYMENT.md)**.
 |---|---|---|
 | **Single-file v1** | Zero build, zero cost, instant share, total privacy | Harder to unit-test in isolation; addressed by pure functions + Node test harness |
 | **Rule-based engine first** | Explainable, deterministic, free, no key | Less "magic" than an LLM; mitigated by a swappable interface for v2 |
-| **`localStorage` for history** | Private by default, no backend needed | Per-device only; v2 accounts add cross-device sync |
+| **`localStorage` as a feedback backlog** | Guarantees a submitted feedback response is never silently lost, even offline or past the free-tier monthly cap | Per-device only, not a synced backend; acceptable since feedback is optional and non-critical |
+| **Confidence Meter from answer spread, not a black box** | Every insight's Low/Medium/High confidence is a deterministic function of how consistent the underlying raw answers were — fully explainable, no hidden model | Confidence reflects internal consistency of answers, not external validity of the insight itself |
 | **Inline SVG + Canvas** | No chart library to ship; full control; renders in PDF | More manual code; isolated in render helpers |
 | **Randomised question draw** | Replayable, reduces gaming/memorisation | Scores vary slightly run-to-run; documented as a feature, normalised in scoring |
 | **Explainability as a first-class layer** | Responsible framing; builds trust | More copy to maintain; centralised in the engine |

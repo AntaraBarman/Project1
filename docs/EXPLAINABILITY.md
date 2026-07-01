@@ -40,8 +40,10 @@ scoring internals. Examples:
 ## 4. Confidence indicators
 
 Confidence reflects **internal consistency**, not correctness. When your answers within a dimension agree, the
-signal is stronger; when they conflict, the report says so rather than over-claiming. v2 will surface a numeric
-confidence per insight (e.g. *"Based on answers 3, 14, 19"*) computed from response variance.
+signal is stronger; when they conflict, the report says so rather than over-claiming. As of v1, every Blind Spot,
+Behavioral Style, and Future Tendency carries a **Low / Medium / High confidence badge**, computed deterministically
+from the standard deviation of the raw (normalised 0–10) answers behind the dimension(s) it depends on — tightly
+clustered answers read as High confidence, scattered ones as Low. This is fully rule-based, with no hidden model.
 
 ## 5. What we deliberately avoid
 
