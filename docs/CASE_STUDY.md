@@ -36,9 +36,9 @@ feature, not an afterthought.
    responses. A persistent banner reinforces that this is reflection, not clinical assessment.
 2. **Free, private, no sign-up.** v1 runs 100% client-side. This removed the biggest friction (accounts) and the
    biggest risk (storing personal data) in one move.
-3. **Make it a game, not a form.** Colour-coded "zones" per question, checkpoints, badges, a Pattern Score, and a
-   shareable mandala card raise completion and shareability without diluting the substance.
-4. **Randomise the questions.** Each run draws a fresh subset, so the tool is replayable and harder to game.
+3. **Make it feel earned, not like a form.** Colour-coded "zones" per question, checkpoints, badges, a Pattern Score, and a
+   colourful shareable card raise completion and shareability without diluting the substance.
+4. **Randomise the questions.** Each run draws a fresh subset, so the tool is replayable and harder to reverse-engineer answers for.
 5. **Layer depth gradually.** Headline (Pattern Score) → shape (radar/DNA) → meaning (styles, scenarios) →
    action (toolkit, plan) → share (Wrapped, card). Casual users get value early; engaged users go deep.
 

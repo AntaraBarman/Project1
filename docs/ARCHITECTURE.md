@@ -27,7 +27,7 @@ flowchart TD
     REP --> VIS[Visualisations<br/>SVG radar/bars/gauge · Canvas card]
     REP --> EXP[Explainability layer]
     REP --> REC[Recommendation Engine]
-    REP --> GAME[Badges · Wrapped · Avatar]
+    REP --> EXTRA[Badges · Wrapped · Avatar]
     LS[(localStorage<br/>private history)] <--> REP
     AUD[Web Audio API<br/>generative focus music]
   end
@@ -44,7 +44,7 @@ flowchart TD
 | Behavioral Intelligence Engine | Pure functions: `buildInsights`, `buildPatternPoints`, `buildScenarios`, `buildAvatar`, `buildDNA`, domains, recruiter mapping |
 | Recommendation Engine | Maps weakest dimensions → books, talks, podcasts, habits, meditations, apps (each with a *why*) |
 | Explainability | Frames every output as a tendency and surfaces the responses that drove it |
-| Visualisation | Inline SVG (radar, bars, gauge, timeline) + Canvas (mandala share card) |
+| Visualisation | Inline SVG (radar, bars, gauge, timeline) + Canvas (colourful share card) |
 | Persistence | `localStorage` history for the progress timeline (per-device, private) |
 
 ---
