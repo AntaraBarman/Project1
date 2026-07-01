@@ -5,12 +5,12 @@
 
 *Turn a few honest answers into a personalised, explainable map of how you actually operate — then track it over time.*
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Play%20Now-04EEDD?style=for-the-badge)](https://antarabarman.github.io/Project1/)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Play%20Now-04EEDD?style=for-the-badge)](https://antarabarman.github.io/Decode_Your_Pattern/)
 [![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-3b82f6?style=for-the-badge)](LICENSE)
 [![Made with](https://img.shields.io/badge/Built%20with-HTML%20%C2%B7%20Canvas%20%C2%B7%20SVG-a855f7?style=for-the-badge)](#tech)
 [![Cost](https://img.shields.io/badge/Hosting-%240%20forever-22c55e?style=for-the-badge)](docs/DEPLOYMENT.md)
 
-[**▶ Try the live demo**](https://antarabarman.github.io/Project1/) · [Architecture](docs/ARCHITECTURE.md) · [Case study](docs/CASE_STUDY.md) · [Explainability](docs/EXPLAINABILITY.md) · [Roadmap](ROADMAP.md)
+[**▶ Try the live demo**](https://antarabarman.github.io/Decode_Your_Pattern/) · [Architecture](docs/ARCHITECTURE.md) · [Case study](docs/CASE_STUDY.md) · [Explainability](docs/EXPLAINABILITY.md) · [Roadmap](ROADMAP.md)
 
 </div>
 
@@ -47,8 +47,8 @@ entirely in the browser. No sign-up. No tracking. No data leaves the device.
 
 ```bash
 # 1. Clone
-git clone https://github.com/AntaraBarman/Project1.git
-cd Project1
+git clone https://github.com/AntaraBarman/Decode_Your_Pattern.git
+cd Decode_Your_Pattern
 
 # 2. Open in a browser — that's it. No build step, no dependencies.
 #    macOS:  open index.html
@@ -56,7 +56,7 @@ cd Project1
 #    Windows: start index.html
 ```
 
-Or just **[open the live demo](https://antarabarman.github.io/Project1/)**.
+Or just **[open the live demo](https://antarabarman.github.io/Decode_Your_Pattern/)**.
 
 ## 🗂️ Repository structure
 

@@ -25,8 +25,8 @@ See [docs/EXPLAINABILITY.md](docs/EXPLAINABILITY.md).
 v1 is a single HTML file — no build step:
 
 ```bash
-git clone https://github.com/AntaraBarman/Project1.git
-cd Project1
+git clone https://github.com/AntaraBarman/Decode_Your_Pattern.git
+cd Decode_Your_Pattern
 # open index.html (article) or decode-your-pattern_6.html (assessment) in a browser
 ```
 
