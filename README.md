@@ -3,11 +3,11 @@
 # 🧠 Decode Your Pattern
 ### A Personal Intelligence Platform for Self-Reflection and Growth
 
-*Turn a few honest answers into a personalised, explainable map of how you actually operate — then track it over time.*
+*Turn a few honest answers into a personalised, explainable map of how you actually operate.*
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-Play%20Now-04EEDD?style=for-the-badge)](https://antarabarman.github.io/Decode_Your_Pattern/)
 [![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-3b82f6?style=for-the-badge)](LICENSE)
-[![Made with](https://img.shields.io/badge/Built%20with-HTML%20%C2%B7%20Canvas%20%C2%B7%20SVG-a855f7?style=for-the-badge)](#tech)
+[![Made with](https://img.shields.io/badge/Built%20with-HTML%20%C2%B7%20Canvas%20%C2%B7%20SVG-f97316?style=for-the-badge)](#tech)
 [![Cost](https://img.shields.io/badge/Hosting-%240%20forever-22c55e?style=for-the-badge)](docs/DEPLOYMENT.md)
 
 [**▶ Try the live demo**](https://antarabarman.github.io/Decode_Your_Pattern/) · [Architecture](docs/ARCHITECTURE.md) · [Case study](docs/CASE_STUDY.md) · [Explainability](docs/EXPLAINABILITY.md) · [Roadmap](ROADMAP.md)
@@ -34,14 +34,17 @@ report that is unique to you:
 | 🧬 | **Pattern DNA** | A branded signature of all 10 traits — nobody else's reads the same. |
 | 🌐 | **Life domains** | The same patterns projected onto Career, Relationships, Health, Money, Learning, Leadership. |
 | 💼 | **Recruiter mode** | A professional-competency view — screenshot-ready for a CV or portfolio. |
-| 🏅 | **Badges + progress timeline** | Earn badges, then track your Pattern Score across months. |
+| 🏅 | **Badges** | Unlocked from the shape of your answers, with locked ones showing what you're closest to next. |
 | ⚠️ | **Scenarios** | Real situations where your weak spots bite — and the move that breaks the loop. |
 | 🧰 | **Growth toolkit** | Book, talk, podcast, daily habit, meditation, and app — matched to your weakest areas. |
 | 🎁 | **Mind Wrapped + share card** | A Spotify-Wrapped-style summary and a colourful downloadable image to share. |
 | 🪞 | **Explainability** | Insights are framed as tendencies, never facts — with the *why* behind them. |
+| 💬 | **Feedback** | A quick, optional star rating + comments at the end of the report, so the assessment keeps improving. |
 
 Plus: a clean landing page, generative **focus music**, and **PDF export** — all running
-entirely in the browser. No sign-up. No tracking. No data leaves the device.
+entirely in the browser. No sign-up, no account, and no tracking. The assessment itself never leaves
+your device; the only exception is the optional feedback form, which — if you choose to submit it —
+sends just your rating, comments, and a timestamp to a third-party form service (no name or email).
 
 ## 🚀 Quickstart
 
@@ -97,15 +100,17 @@ flowchart LR
   R --> V[Visualisations<br/>radar · bars · gauge · DNA]
   R --> X[Explainability layer<br/>why was this suggested?]
   R --> S[Share card · PDF · Mind Wrapped]
-  R -.-> H[(localStorage history)]
-  H --> T[Progress timeline]
+  R --> F[Optional feedback form]
+  F -.->|rating, comments, timestamp only| FS[(Formspree)]
 ```
 
 ## 🔒 Privacy by design
 
-v1 sends **nothing** to any server — the entire assessment, scoring, and report run locally, and history is
-stored only in your browser's `localStorage`. The planned v2 analytics are **aggregate and anonymous only**
-(see [SECURITY.md](SECURITY.md) and [Case study → Privacy](docs/CASE_STUDY.md)).
+The entire assessment, scoring, and report run locally and send **nothing** to any server. The one
+exception is the optional feedback form: if you choose to submit it, your star rating, helpful/not-helpful
+answer, comments, feature suggestion, and a timestamp are sent to a third-party form service (Formspree) —
+never your name or email, and never anything else on the page. The planned v2 analytics are **aggregate
+and anonymous only** (see [SECURITY.md](SECURITY.md) and [Case study → Privacy](docs/CASE_STUDY.md)).
 
 ## 🗺️ Roadmap & docs
 

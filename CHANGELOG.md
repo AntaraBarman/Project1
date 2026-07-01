@@ -4,6 +4,17 @@ All notable changes to this project are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/), and this project aims to follow
 [Semantic Versioning](https://semver.org/).
 
+## [1.5.0] — 2026-07 — Feedback, UI polish, purple removed
+### Added
+- **"Help Us Improve" feedback form** at the end of every report: a 1–5 star rating and Yes/Partially/No helpfulness question (both required), plus optional comments and a feature-suggestion field. Submits inline via AJAX with no page redirect, shows a simple thank-you message, and is fully keyboard/screen-reader accessible (native radio inputs styled as stars and choice pills). No name or email is ever collected.
+- Feedback submissions POST to a free [Formspree](https://formspree.io) endpoint (see [DEPLOYMENT.md](docs/DEPLOYMENT.md) for the one-time setup) and are also mirrored into `localStorage` as a local delivery safety net.
+### Changed
+- The three report-action buttons (**Retake with new questions**, **Shareable Card**, **Download Your Report**) are now a uniform width instead of sizing to their own label length; on narrow screens they stack full-width.
+- Replaced the last purple accent color (`#a855f7`, used for the Self-trust dimension throughout the radar chart, dimension bars, DNA blocks, badges, and related insight text) with orange (`#f97316`) for better visual distinction from the rest of the palette.
+### Removed
+- The **"Progress" note** ("last time you scored X, now Y…") shown under badges, along with its underlying `localStorage`-based score history — the last remaining piece of the score-tracking feature (the chart itself was removed in 1.4.0). Each report is now fully self-contained.
+- Several dead CSS rules discovered during this cleanup: unused `section-card` accent classes (`accent-nature`, `accent-context`, `accent-pattern`, `accent-strength`, `accent-improve`, `accent-brain`, `accent-watch`, `accent-sticky`, `accent-triggers` — none were referenced by any element) and the leftover `.deliver-grid` styles from the EmailJS delivery feature removed in 1.3.0.
+
 ## [1.4.1] — 2026-07 — PDF export reliability fix
 ### Fixed
 - **PDF download could hang indefinitely or fail silently.** `downloadPdf()` opened with an unguarded double-`requestAnimationFrame` wait that never resolves in a backgrounded/hidden browser tab — now raced against a short timer so it can never block forever.

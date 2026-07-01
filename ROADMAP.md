@@ -8,12 +8,12 @@ Interactive 14-rule article + 10-dimension assessment, Pattern Score, charts, sc
 client-side and live on GitHub Pages.
 
 ## ✅ Phase 1 — Premium, explainable report (done)
-Style insights (decision/communication/stress/learning), hidden potential & blind spots, badges + on-device
-progress, growth toolkit (book/talk/podcast/habit/meditation/app), mandala share card.
+Style insights (decision/communication/stress/learning), hidden potential & blind spots, badges,
+growth toolkit (book/talk/podcast/habit/meditation/app), colourful share card.
 
 ## ✅ Phase 2 — Identity & depth (done)
-Symbolic avatar, story mode + human-voice phrasing, **Pattern DNA**, life domains, recruiter mode, Mind Wrapped,
-Pattern Score timeline.
+Symbolic avatar, story mode + human-voice phrasing, **Pattern DNA**, life domains, recruiter mode, Mind Wrapped.
+*(An on-device Pattern Score history/timeline shipped in this phase was later removed — see [CHANGELOG.md](CHANGELOG.md) — in favour of keeping each report self-contained.)*
 
 ## 🟦 Phase A — Production polish (in progress)
 World-class README, architecture + sequence + ERD diagrams, case study, explainability spec, API spec,

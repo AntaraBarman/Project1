@@ -157,14 +157,7 @@
   .board-hint { text-align: center; font-size: 12px; color: var(--ink-muted); margin-top: 14px; }
 
   .section-card { background: var(--panel); border: 1px solid var(--panel-line); border-radius: 14px; padding: 22px 22px; margin-bottom: 16px; border-left: 4px solid var(--panel-line); }
-  .section-card.accent-nature { border-left-color: #4a7fb5; }
-  .section-card.accent-context { border-left-color: #a06bb0; }
-  .section-card.accent-pattern { border-left-color: var(--gold); }
-  .section-card.accent-strength { border-left-color: #6aaa3a; }
-  .section-card.accent-improve { border-left-color: #c2603a; }
   .section-card.accent-books { border-left-color: #c0a03a; }
-  .section-card.accent-brain { border-left-color: #a06bb0; }
-  .section-card.accent-watch { border-left-color: #b04a6a; }
   .section-card.accent-quote { border-left-color: var(--gold); }
   .section-card.accent-plan { border-left-color: #3a9a9a; }
   .dim-chip { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px; }
@@ -181,6 +174,7 @@
 
 
   .result-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 22px; }
+  .result-actions button { width: 232px; text-align: center; white-space: nowrap; }
   .share-note { text-align: center; font-size: 12px; color: var(--text-light-soft); margin-top: 14px; }
   .disclaimer { font-size: 12px; color: var(--text-light-soft); opacity: 0.7; margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--panel-line); line-height: 1.6; }
 
@@ -227,13 +221,15 @@
 
   @media (max-width: 480px) {
     .strength-grid { grid-template-columns: 1fr; }
+    .result-actions { flex-direction: column; align-items: stretch; }
+    .result-actions button { width: 100%; }
   }  @media print {
     @page { margin: 14mm; }
     body { background: #ffffff !important; color: #14171f !important; }
     .wrap { max-width: 100%; padding: 0; }
     #intro, #intake, #personal, #board { display: none !important; }
     #result.screen { display: block !important; }
-    .result-actions, .share-note, .no-print { display: none !important; }
+    .result-actions, .share-note, .feedback-section, .no-print { display: none !important; }
     .board-frame { background: var(--board) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .section-card, .tier-card, .score-medal { background: #f4f3ef !important; border: 1px solid #d8d6cc !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .archetype-name, h1, h2, .label, .brain-tip-title, .book-title, .tier-name { color: #14171f !important; }
@@ -354,8 +350,6 @@
   .accent-charts  { border-left-color:#06b6d4 !important; background:linear-gradient(180deg,rgba(6,182,212,.10),var(--panel)) !important; }
   .accent-notice  { border-left-color:#ec4899 !important; background:linear-gradient(180deg,rgba(236,72,153,.10),var(--panel)) !important; }
   .accent-scenario{ border-left-color:#ef4444 !important; background:linear-gradient(180deg,rgba(239,68,68,.10),var(--panel)) !important; }
-  .accent-sticky  { border-left-color:#eab308 !important; }
-  .accent-triggers{ border-left-color:#a855f7 !important; background:linear-gradient(180deg,rgba(168,85,247,.10),var(--panel)) !important; }
   .label-xl { font-family:'Fraunces',serif; font-size:22px; font-weight:700; color:#fbf8ef; margin-bottom:4px; }
   .label-sub { font-size:13.5px; color:#cfc8b8; margin-bottom:16px; line-height:1.5; }
 
@@ -466,9 +460,6 @@
   .badge.locked{opacity:1;filter:none}
   .badge.locked .b-coin{background:#2a2f3a !important;border-color:var(--panel-line);opacity:.5;filter:grayscale(.5)}
   .badge.locked .b-name{color:#aeb4c2}
-  .progress-note{margin-top:14px;background:rgba(25,213,191,.10);border:1px solid var(--gold-deep);border-radius:12px;padding:14px 16px;font-size:14px;color:#eef3f1;line-height:1.6}
-  .progress-note b{color:var(--gold)}
-  .delta-up{color:#7ee08a;font-weight:700} .delta-down{color:#ff9b8a;font-weight:700} .delta-same{color:var(--text-light-soft);font-weight:700}
 
   /* toolkit */
   .toolkit-grid{display:flex;flex-direction:column;gap:10px}
@@ -501,11 +492,38 @@
   .wrap-card .w-label{font-size:11px;text-transform:uppercase;letter-spacing:.06em;opacity:.9;font-weight:700}
   .wrap-card .w-value{font-family:'Fraunces',serif;font-size:18px;margin-top:6px;line-height:1.25;font-weight:700}
 
-  /* email controls */
-  .deliver-grid { display:flex; flex-wrap:wrap; gap:10px; margin-top:8px; }
-  .deliver-grid input { flex:1; min-width:180px; }
   .btn-ghost { background:transparent; color:var(--gold); border:1px solid var(--gold-deep); font-weight:600; padding:11px 18px; font-size:14px; border-radius:6px; cursor:pointer; font-family:inherit; }
   .btn-ghost:hover { background:rgba(25,213,191,.10); }
+
+  /* ===== Feedback section ===== */
+  .feedback-section { margin-top: 30px; padding-top: 26px; border-top: 1px solid var(--panel-line); text-align: center; }
+  .feedback-section .label-xl { font-size: 19px; }
+  .feedback-section .label-sub { max-width: 440px; margin: 0 auto 16px; }
+  #feedback-open-btn { margin-top: 2px; }
+  .feedback-form { margin-top: 20px; background: var(--panel); border: 1px solid var(--panel-line); border-radius: 14px; padding: 24px; text-align: left; max-width: 480px; margin-left: auto; margin-right: auto; }
+  .fb-field { margin-bottom: 18px; }
+  .fb-field:last-of-type { margin-bottom: 16px; }
+  .fb-field textarea, .fb-field .field-input { width: 100%; }
+  .star-rating { display: flex; flex-direction: row-reverse; justify-content: flex-end; gap: 4px; }
+  .star-rating input { position: absolute; opacity: 0; width: 0; height: 0; }
+  .star-rating label { font-size: 32px; line-height: 1; color: var(--panel-line); cursor: pointer; transition: color .15s ease, transform .1s ease; padding: 2px; }
+  .star-rating label:hover { transform: scale(1.1); }
+  .star-rating input:checked ~ label,
+  .star-rating label:hover,
+  .star-rating label:hover ~ label { color: var(--gold); }
+  .star-rating input:focus-visible + label { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 4px; }
+  .fb-choice-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .fb-choice-row input { position: absolute; opacity: 0; width: 0; height: 0; }
+  .fb-choice-btn { display: flex; align-items: center; justify-content: center; flex: 1; min-width: 88px; padding: 13px 14px; border-radius: 8px; border: 1px solid var(--panel-line); background: var(--bg-deep-2); color: var(--text-light); font-size: 14px; font-weight: 600; cursor: pointer; text-align: center; }
+  .fb-choice-row input:checked + .fb-choice-btn { border-color: var(--gold); background: rgba(25,213,191,.12); color: var(--gold); }
+  .fb-choice-row input:focus-visible + .fb-choice-btn { outline: 2px solid var(--gold); outline-offset: 2px; }
+  #fb-submit-btn { width: 100%; margin-top: 4px; }
+  #fb-submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+  .feedback-success { margin-top: 20px; background: rgba(25,213,191,.10); border: 1px solid var(--gold-deep); border-radius: 12px; padding: 18px 16px; font-size: 15px; color: #eef3f1; max-width: 480px; margin-left: auto; margin-right: auto; }
+  @media (max-width: 480px) {
+    .feedback-form { padding: 20px 16px; }
+    .fb-choice-btn { min-width: 0; }
+  }
 
 </style>
 </head>
@@ -715,7 +733,6 @@
       <p class="label-xl">🏅 Badges you earned</p>
       <p class="label-sub">Unlocked from the shape of your answers. Locked ones show what you're closest to next.</p>
       <div class="badge-row" id="badge-row"></div>
-      <div class="progress-note" id="progress-note" style="display:none"></div>
     </div>
 
     <div class="section-card accent-notice">
@@ -775,6 +792,54 @@
     </div>
     <canvas id="share-canvas" width="1080" height="1080" style="display:none"></canvas>
     <p class="share-note" id="pdf-status"></p>
+
+    <div class="feedback-section no-print" id="feedback-section">
+      <div id="feedback-prompt">
+        <p class="label-xl">Help Us Improve</p>
+        <p class="label-sub">Your feedback helps us improve future reports. It only takes about 30 seconds.</p>
+        <button class="btn-ghost" id="feedback-open-btn" onclick="openFeedbackForm()">Share Feedback</button>
+      </div>
+
+      <form class="feedback-form" id="feedback-form" style="display:none" onsubmit="return submitFeedback(event)" novalidate>
+        <div class="fb-field">
+          <label class="field-label" id="fb-rating-label">Overall rating <span class="required-star">*</span></label>
+          <div class="star-rating" role="radiogroup" aria-labelledby="fb-rating-label">
+            <input type="radio" name="fb-rating" id="fb-star-5" value="5"><label for="fb-star-5" title="5 stars">★</label>
+            <input type="radio" name="fb-rating" id="fb-star-4" value="4"><label for="fb-star-4" title="4 stars">★</label>
+            <input type="radio" name="fb-rating" id="fb-star-3" value="3"><label for="fb-star-3" title="3 stars">★</label>
+            <input type="radio" name="fb-rating" id="fb-star-2" value="2"><label for="fb-star-2" title="2 stars">★</label>
+            <input type="radio" name="fb-rating" id="fb-star-1" value="1"><label for="fb-star-1" title="1 star">★</label>
+          </div>
+        </div>
+
+        <div class="fb-field">
+          <label class="field-label" id="fb-helpful-label">Was this report helpful? <span class="required-star">*</span></label>
+          <div class="fb-choice-row" role="radiogroup" aria-labelledby="fb-helpful-label">
+            <input type="radio" name="fb-helpful" id="fb-helpful-yes" value="Yes"><label class="fb-choice-btn" for="fb-helpful-yes">Yes</label>
+            <input type="radio" name="fb-helpful" id="fb-helpful-partial" value="Partially"><label class="fb-choice-btn" for="fb-helpful-partial">Partially</label>
+            <input type="radio" name="fb-helpful" id="fb-helpful-no" value="No"><label class="fb-choice-btn" for="fb-helpful-no">No</label>
+          </div>
+        </div>
+
+        <div class="fb-field">
+          <label class="field-label" for="fb-comments">Comments <span class="optional-tag">(optional)</span></label>
+          <textarea id="fb-comments" maxlength="600" placeholder="Tell us what you liked or what we can improve..."></textarea>
+        </div>
+
+        <div class="fb-field">
+          <label class="field-label" for="fb-feature">Suggest a feature <span class="optional-tag">(optional)</span></label>
+          <input type="text" id="fb-feature" class="field-input" maxlength="200" placeholder="Any feature you'd love to see?">
+        </div>
+
+        <p id="fb-error" class="field-error" style="display:none;">Please add a star rating and let us know if the report was helpful.</p>
+
+        <button type="submit" class="btn-primary" id="fb-submit-btn">Submit Feedback</button>
+      </form>
+
+      <div class="feedback-success" id="feedback-success" style="display:none" role="status">
+        🎉 <b>Thank you!</b> Your feedback helps us make the app better.
+      </div>
+    </div>
   </div>
 
 </div>
@@ -788,7 +853,7 @@ const PARAMS = {
   discipline:   {label:"Discipline",   color:"#f59e0b", terrain:"foundation"},
   resilience:   {label:"Resilience",   color:"#22c55e", terrain:"anchor stone"},
   adaptability: {label:"Adaptability", color:"#06b6d4", terrain:"river bend"},
-  selftrust:    {label:"Self-trust",   color:"#a855f7", terrain:"compass rock"},
+  selftrust:    {label:"Self-trust",   color:"#f97316", terrain:"compass rock"},
   boundaries:   {label:"Boundaries",   color:"#ec4899", terrain:"gate"},
   patience:     {label:"Patience",     color:"#6366f1", terrain:"old oak"},
   clarity:      {label:"Clarity",      color:"#14b8a6", terrain:"lighthouse"},
@@ -1703,7 +1768,7 @@ async function downloadPdf(){
     #pdf-capture-area .disclaimer b { color:#1c1812 !important; }
     #pdf-capture-area .insight-card { background:#fbfbf8 !important; border:1px solid #e4ddd0 !important; }
     #pdf-capture-area .insight-card .ic-title, #pdf-capture-area .insight-card p, #pdf-capture-area .badge .b-name,
-    #pdf-capture-area .progress-note, #pdf-capture-area .tool-body, #pdf-capture-area .tool-body b,
+    #pdf-capture-area .tool-body, #pdf-capture-area .tool-body b,
     #pdf-capture-area .avatar-name, #pdf-capture-area .story-text, #pdf-capture-area .domain-name, #pdf-capture-area .dna-name { color:#1c1812 !important; }
     #pdf-capture-area .domain-read, #pdf-capture-area .avatar-line { color:#4a4332 !important; }
     #pdf-capture-area .tool-item, #pdf-capture-area .domain-card { background:#fbfbf8 !important; }
@@ -2015,7 +2080,7 @@ function buildPatternPoints(dimScores){
   P('3','#f59e0b',`Right behind it: <b>${PARAMS[bottom[1][0]].label.toLowerCase()}</b> (${bottom[1][1]*10}/100). ${IMPROVEMENT_PHRASES[bottom[1][0]]}`);
   // tension
   const matched=TENSION_RULES.filter(r=>r.test(dimScores));
-  if(matched.length){ P('⚡','#a855f7',`<b>The tension to watch:</b> ${matched[0].text}`); }
+  if(matched.length){ P('⚡','#f97316',`<b>The tension to watch:</b> ${matched[0].text}`); }
   // spread read
   if(spread<=2){ P('◆','#06b6d4',`Your scores are unusually <b>even</b> — no single dimension is dragging, but none is pulling you forward hard either. Consistency is your style; deliberate spikes are your opportunity.`); }
   else if(spread>=6){ P('◆','#06b6d4',`Your profile is <b>spiky</b> — a ${spread*10}-point gap between your highest and lowest. You're carried by your strengths and periodically ambushed by your weak spots. The fix is rarely "do more of what you're good at."`); }
@@ -2123,7 +2188,7 @@ function buildInsights(d, tr){
   ins.push({e:'✨',t:'What surprised us',c:'#f59e0b',x:`For someone strong in ${L(top[0])} (${top[1]*10}/100), your ${L(low[0])} sitting at ${low[1]*10}/100 is the sharpest contrast in your profile — and that gap is exactly where the most growth is hiding.`});
   // hidden potential
   const cand = sorted.slice(2).find(([k,v])=>v>=5) || sorted[2];
-  ins.push({e:'💎',t:'Hidden potential',c:'#a855f7',x:`Your ${L(cand[0])} (${cand[1]*10}/100) is quietly solid but not yet one of your headline strengths. Lean into it on purpose and it could become a signature.`});
+  ins.push({e:'💎',t:'Hidden potential',c:'#f97316',x:`Your ${L(cand[0])} (${cand[1]*10}/100) is quietly solid but not yet one of your headline strengths. Lean into it on purpose and it could become a signature.`});
   // blind spot
   ins.push({e:'🕳️',t:'Likely blind spot',c:'#ef4444',x:`${PARAMS[low[0]].label} (${low[1]*10}/100). ${IMPROVEMENT_PHRASES[low[0]]} Because it scores low, you may not even notice it running.`});
   return ins;
@@ -2145,7 +2210,7 @@ const BADGES=[
  {emoji:'🧘',name:'Calm Leader',color:'#22c55e',cond:d=>d.resilience>=7&&d.boundaries>=6,gap:d=>Math.max(0,7-d.resilience)+Math.max(0,6-d.boundaries)},
  {emoji:'⚙️',name:'Systems Builder',color:'#f59e0b',cond:d=>d.discipline>=7,gap:d=>7-d.discipline},
  {emoji:'⚡',name:'Fast Mover',color:'#ef4444',cond:d=>d.action>=7,gap:d=>7-d.action},
- {emoji:'🧭',name:'Self-Navigator',color:'#a855f7',cond:d=>d.selftrust>=7,gap:d=>7-d.selftrust},
+ {emoji:'🧭',name:'Self-Navigator',color:'#f97316',cond:d=>d.selftrust>=7,gap:d=>7-d.selftrust},
  {emoji:'🌊',name:'Shape-Shifter',color:'#06b6d4',cond:d=>d.adaptability>=7,gap:d=>7-d.adaptability},
  {emoji:'⏳',name:'Long-Gamer',color:'#6366f1',cond:d=>d.patience>=7,gap:d=>7-d.patience},
  {emoji:'🛡️',name:'Boundary Keeper',color:'#ec4899',cond:d=>d.boundaries>=7,gap:d=>7-d.boundaries},
@@ -2164,25 +2229,6 @@ function renderBadgesProgress(d){
     row.appendChild(el);
   });
   lastBadges=earned;
-  recordAndRenderProgress(d);
-}
-function recordAndRenderProgress(d){
-  const note=document.getElementById('progress-note');
-  let hist=[]; try{hist=JSON.parse(localStorage.getItem('dyp-history')||'[]');}catch(e){}
-  const score=lastPatternScore?lastPatternScore.score:0;
-  const prev=hist.length?hist[hist.length-1]:null;
-  hist.push({d:Date.now(),score}); if(hist.length>30) hist=hist.slice(-30);
-  try{localStorage.setItem('dyp-history',JSON.stringify(hist));}catch(e){}
-  const times=hist.length;
-  note.style.display='block';
-  if(prev){
-    const delta=score-prev.score;
-    const cls=delta>0?'delta-up':delta<0?'delta-down':'delta-same';
-    const sign=delta>0?('+'+delta):(delta<0?String(delta):'no change');
-    note.innerHTML=`📈 <b>Progress:</b> last time you scored <b>${prev.score}</b>, now <b>${score}</b> — <span class="${cls}">${sign}</span>. You've decoded your pattern <b>${times}</b> times. Come back monthly to watch the trend move.`;
-  } else {
-    note.innerHTML=`📈 <b>This is your baseline.</b> Your Pattern Score is <b>${score}/900</b>. It's saved on this device — retake in a month and you'll see exactly what moved.`;
-  }
 }
 
 /* ---------- Richer growth toolkit ---------- */
@@ -2228,7 +2274,7 @@ let lastBadges=[];
 
 /* =========================================================================
    PHASE 2 — avatar, story, Pattern DNA, life domains, recruiter mode,
-   Mind Wrapped, and Pattern Timeline (all rule-based, client-side)
+   and Mind Wrapped (all rule-based, client-side)
    ========================================================================= */
 const AVATARS={
  explorer:{name:'The Explorer',emoji:'🧭',dims:['awareness','growth','adaptability'],line:'curious and always scanning for the next pattern to decode'},
@@ -2303,6 +2349,75 @@ function generateShareCard(){
     document.body.appendChild(a); a.click(); a.remove();
     if(st){st.style.color='';st.textContent='Saved your card to downloads — post it on LinkedIn or WhatsApp! 📸';}
   }catch(e){ if(st){st.style.color='#e07a5a';st.textContent='Could not build the card in this browser — try the PDF instead.';} }
+}
+
+/* ---------- Feedback ---------- */
+// Replace this with your own Formspree endpoint (create a free form at https://formspree.io)
+// so real feedback submissions land in your inbox. Until it's set, submissions are only
+// kept locally on the visitor's device as a safety net — they will NOT reach you.
+const FEEDBACK_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
+
+function openFeedbackForm(){
+  document.getElementById('feedback-prompt').style.display = 'none';
+  document.getElementById('feedback-form').style.display = 'block';
+  const firstStar = document.getElementById('fb-star-5');
+  if (firstStar) firstStar.focus();
+}
+
+async function submitFeedback(event){
+  event.preventDefault();
+  const rating = document.querySelector('input[name="fb-rating"]:checked');
+  const helpful = document.querySelector('input[name="fb-helpful"]:checked');
+  const errorEl = document.getElementById('fb-error');
+
+  if (!rating || !helpful) {
+    errorEl.textContent = 'Please add a star rating and let us know if the report was helpful.';
+    errorEl.style.display = 'block';
+    return false;
+  }
+  errorEl.style.display = 'none';
+
+  const payload = {
+    rating: rating.value,
+    helpful: helpful.value,
+    comments: document.getElementById('fb-comments').value.trim(),
+    feature: document.getElementById('fb-feature').value.trim(),
+    timestamp: new Date().toISOString()
+  };
+
+  const btn = document.getElementById('fb-submit-btn');
+  const originalLabel = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+
+  try {
+    if (!FEEDBACK_ENDPOINT.includes('YOUR_FORM_ID')) {
+      const res = await fetch(FEEDBACK_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error('Feedback endpoint responded with ' + res.status);
+    } else {
+      console.warn('FEEDBACK_ENDPOINT is not configured yet — this submission was only saved locally, not sent anywhere.');
+    }
+
+    // Local safety-net copy so a submission is never silently lost even if the network call fails.
+    let backlog = [];
+    try { backlog = JSON.parse(localStorage.getItem('dyp-feedback-backlog') || '[]'); } catch(e){}
+    backlog.push(payload);
+    try { localStorage.setItem('dyp-feedback-backlog', JSON.stringify(backlog.slice(-50))); } catch(e){}
+
+    document.getElementById('feedback-form').style.display = 'none';
+    document.getElementById('feedback-success').style.display = 'block';
+  } catch (err) {
+    console.error('Feedback submission failed:', err);
+    errorEl.textContent = 'Something went wrong sending your feedback. Please try again.';
+    errorEl.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = originalLabel;
+  }
+  return false;
 }
 
 function restartAssessment(){ show('intro'); }

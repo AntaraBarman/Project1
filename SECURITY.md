@@ -10,9 +10,10 @@ acknowledgement as soon as possible.
 
 ### v1 (today)
 - Runs **entirely in the browser**. The assessment, scoring, and report never leave your device.
-- The only persisted data is a private **per-device** history (`localStorage`) used for the progress timeline.
-- The only external call is an **anonymous, aggregate** per-rule reaction counter, with a local fallback if the
-  service is unavailable. No personal data is sent.
+- The only external call is the **optional feedback form** at the end of the report: if submitted, it sends
+  your star rating, helpful/not-helpful answer, comments, feature suggestion, and a timestamp to a third-party
+  form service (Formspree). No name, email, or report content is included, and nothing is sent unless you
+  press "Submit Feedback." A local copy is also kept in `localStorage` as a delivery safety net.
 - No accounts, no cookies for tracking, no third-party analytics.
 
 ### v2 (planned)
