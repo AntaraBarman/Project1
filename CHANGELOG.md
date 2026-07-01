@@ -4,6 +4,10 @@ All notable changes to this project are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/), and this project aims to follow
 [Semantic Versioning](https://semver.org/).
 
+## [1.5.1] — 2026-07 — Feedback: handle the free-tier monthly cap
+### Fixed
+- Formspree's free plan caps submissions at 50/month; once hit, it returns a 429. The feedback form now saves its local `localStorage` backup **before** attempting the network call (not just on generic failure), and specifically detects a 429 to show an honest message — "we've hit our feedback limit for this month, try again in a few days" — instead of a generic "try again" that wouldn't actually help until the cap resets.
+
 ## [1.5.0] — 2026-07 — Feedback, UI polish, purple removed
 ### Added
 - **"Help Us Improve" feedback form** at the end of every report: a 1–5 star rating and Yes/Partially/No helpfulness question (both required), plus optional comments and a feature-suggestion field. Submits inline via AJAX with no page redirect, shows a simple thank-you message, and is fully keyboard/screen-reader accessible (native radio inputs styled as stars and choice pills). No name or email is ever collected.

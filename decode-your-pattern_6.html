@@ -2390,6 +2390,13 @@ async function submitFeedback(event){
   btn.disabled = true;
   btn.textContent = 'Sending…';
 
+  // Save a local safety-net copy FIRST, before any network call — so a submission is never
+  // lost even if the request fails outright (offline, CORS, the free plan's monthly cap, etc.).
+  let backlog = [];
+  try { backlog = JSON.parse(localStorage.getItem('dyp-feedback-backlog') || '[]'); } catch(e){}
+  backlog.push(payload);
+  try { localStorage.setItem('dyp-feedback-backlog', JSON.stringify(backlog.slice(-50))); } catch(e){}
+
   try {
     if (!FEEDBACK_ENDPOINT.includes('YOUR_FORM_ID')) {
       const res = await fetch(FEEDBACK_ENDPOINT, {
@@ -2397,22 +2404,22 @@ async function submitFeedback(event){
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify(payload)
       });
+      if (res.status === 429) {
+        // Formspree's free plan caps submissions at 50/month; this is what it returns once that's hit.
+        throw new Error('MONTHLY_LIMIT_REACHED');
+      }
       if (!res.ok) throw new Error('Feedback endpoint responded with ' + res.status);
     } else {
       console.warn('FEEDBACK_ENDPOINT is not configured yet — this submission was only saved locally, not sent anywhere.');
     }
 
-    // Local safety-net copy so a submission is never silently lost even if the network call fails.
-    let backlog = [];
-    try { backlog = JSON.parse(localStorage.getItem('dyp-feedback-backlog') || '[]'); } catch(e){}
-    backlog.push(payload);
-    try { localStorage.setItem('dyp-feedback-backlog', JSON.stringify(backlog.slice(-50))); } catch(e){}
-
     document.getElementById('feedback-form').style.display = 'none';
     document.getElementById('feedback-success').style.display = 'block';
   } catch (err) {
     console.error('Feedback submission failed:', err);
-    errorEl.textContent = 'Something went wrong sending your feedback. Please try again.';
+    errorEl.textContent = err.message === 'MONTHLY_LIMIT_REACHED'
+      ? 'We\'ve hit our feedback limit for this month — your response is saved on this device, but please try submitting again in a few days.'
+      : 'Something went wrong sending your feedback. Please try again.';
     errorEl.style.display = 'block';
     btn.disabled = false;
     btn.textContent = originalLabel;
